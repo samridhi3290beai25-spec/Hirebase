@@ -1,0 +1,218 @@
+/* ============================================================
+   Hirebase Contact Page Stylesheet (contact.css)
+   Contact Hero, Info Cards Grid, Department Select, & Contact Form
+   ============================================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  padding-top: var(--navbar-height);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+
+
+/* ---------- Main Content Layout ---------- */
+.contact-main {
+  flex: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 56px 24px;
+  width: 100%;
+}
+
+.contact-intro {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.contact-intro h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 800;
+  color: var(--color-text);
+  margin-bottom: 12px;
+  letter-spacing: -1px;
+}
+
+.contact-intro p {
+  font-size: 17px;
+  color: var(--color-text-muted);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Grid Layout: Info Side + Form */
+.contact-grid-wrap {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+@media (min-width: 800px) {
+  .contact-grid-wrap {
+    grid-template-columns: 1fr 1.5fr;
+  }
+}
+
+/* Info Cards Sidebar */
+.contact-info-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.info-card {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+}
+
+.info-card:hover {
+  border-color: var(--color-accent);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.info-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.info-text h3 {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.info-text p {
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+
+/* Contact Card Form */
+.contact-card {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 36px;
+  box-shadow: var(--shadow-md);
+}
+
+.field {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.field input,
+.field select,
+.field textarea {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 14px;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  outline: none;
+  transition: all var(--transition-fast);
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-soft);
+  background-color: var(--color-bg-alt);
+}
+
+.form-message {
+  min-height: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-success);
+  margin-bottom: 12px;
+}
+
+button[type="submit"] {
+  width: 100%;
+  background: linear-gradient(135deg, var(--color-accent) 0%, #4F46E5 100%);
+  color: #FFFFFF;
+  border: none;
+  padding: 14px;
+  min-height: 48px;
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+  transition: all var(--transition-normal);
+}
+
+button[type="submit"]:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(99, 102, 241, 0.45);
+}
+
+/* ---------- Footer Integration ---------- */
+footer {
+  background-color: #0F172A;
+  color: #94A3B8;
+  padding: 24px 40px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  margin-top: auto;
+}
+
+.footer-links {
+  display: flex;
+  gap: 20px;
+}
+
+.footer-links a {
+  color: #CBD5E1;
+}
+
+.footer-links a:hover {
+  color: var(--color-accent);
+}

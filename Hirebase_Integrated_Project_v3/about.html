@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About us - Hirebase</title>
+  <meta name="description" content="Learn about Hirebase's mission to connect skilled professionals with high-impact remote and tech roles." />
+  <link rel="icon" type="image/svg+xml" href="images/logo.svg" />
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("hb_theme");
+        if (t === "dark") document.documentElement.setAttribute("data-theme", "dark");
+        var loggedIn = localStorage.getItem("hb_logged_in") === "true";
+        document.documentElement.setAttribute("data-user-logged-in", loggedIn ? "true" : "false");
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="css/theme.css" />
+  <link rel="stylesheet" href="css/enhance.css" />
+  <link rel="stylesheet" href="css/about.css" />
+</head>
+<body>
+
+  <!-- Navigation Header (Touch-Scrollable Navbar) -->
+  <header class="header-bar">
+    <nav class="navbar">
+      <a href="Index.html" class="brand">
+        <img src="images/logo.svg" alt="Hirebase logo" class="brand-logo" />
+        <span>Hirebase</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="Index.html">Home</a></li>
+        <li><a href="suggestions.html">Suggestions</a></li>
+        <li><a href="notifications.html">Notifications <span class="nav-notif-badge" style="background: var(--color-accent); color: #fff; border-radius: 10px; padding: 1px 6px; font-size: 11px;">3</span></a></li>
+        <li><a href="apply-job.html">Seeker Portal</a></li>
+        <li><a href="post-job.html">Post a Job</a></li>
+        <li><a href="about.html" class="active-link">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+
+      <div class="nav-controls">
+        <ul class="auth-links">
+          <li class="auth-guest"><a href="signin.html">Sign in</a></li>
+          <li class="auth-guest"><a href="signup.html" class="btn-signup">Sign up</a></li>
+          <li class="auth-user"><a href="apply-job.html" class="profile-link"><span class="profile-avatar">JL</span><span>Jordan Lee</span><span class="online-dot"></span></a></li>
+          <li class="auth-user"><a href="Index.html?logout=success" class="logout-link">Logout</a></li>
+        </ul>
+        <button id="theme-toggle" class="theme-toggle-btn" type="button" aria-label="Toggle dark mode">☾</button>
+      </div>
+    </nav>
+  </header>
+
+  <main class="about-main">
+    <section class="about-hero">
+      <h1>Connecting Talent With Opportunity</h1>
+      <p>Hirebase matches job seekers with roles that align with their skills, location preferences, and career goals — eliminating noise and ghost listings.</p>
+    </section>
+
+    <!-- Platform Impact Stats -->
+    <div class="about-stats">
+      <div class="stat-box">
+        <div class="num">12,480+</div>
+        <div class="lbl">Active Openings</div>
+      </div>
+      <div class="stat-box">
+        <div class="num">500+</div>
+        <div class="lbl">Verified Employers</div>
+      </div>
+      <div class="stat-box">
+        <div class="num">24h</div>
+        <div class="lbl">Avg Response Time</div>
+      </div>
+    </div>
+
+    <section class="about-content">
+      <article>
+        <h2>Our Mission</h2>
+        <p>Job hunting shouldn't feel like a full-time job. Hirebase focuses on curated tech, design, marketing, and support listings, transparent salary ranges, and straightforward application flows that respect your time.</p>
+      </article>
+
+      <article>
+        <h2>Core Values</h2>
+        <div class="values-grid">
+          <div class="value-card">
+            <span class="value-icon">🔍</span>
+            <h3>Transparency First</h3>
+            <p>Clear salary benchmarks and verified job requirements on every listing.</p>
+          </div>
+          <div class="value-card">
+            <span class="value-icon">⚡</span>
+            <h3>Speed &amp; Simplicity</h3>
+            <p>Easy Apply flows that take under 60 seconds with no endless forms.</p>
+          </div>
+          <div class="value-card">
+            <span class="value-icon">🎯</span>
+            <h3>Quality Matching</h3>
+            <p>Intelligent matching algorithms based on skill relevance and workplace fit.</p>
+          </div>
+          <div class="value-card">
+            <span class="value-icon">🤝</span>
+            <h3>Candidate Respect</h3>
+            <p>No spammy recruiters or sold candidate data — your privacy comes first.</p>
+          </div>
+        </div>
+      </article>
+
+      <article>
+        <h2>What We Offer</h2>
+        <ul>
+          <li>Curated listings across design, engineering, marketing, and customer support</li>
+          <li>Direct candidate-to-company application tracking with real-time status updates</li>
+          <li>Interactive salary estimator powered by real market data</li>
+        </ul>
+      </article>
+
+      <article>
+        <h2>Get in Touch</h2>
+        <p>Have questions, feedback, or employer partnership ideas? Visit our <a href="contact.html">Contact us</a> page and send our team a message.</p>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Hirebase Inc.</p>
+    <nav class="footer-links" aria-label="Footer Navigation">
+      <a href="Index.html">Home</a>
+      <a href="suggestions.html">Suggestions</a>
+      <a href="notifications.html">Notifications</a>
+      <a href="apply-job.html">Seeker Portal</a>
+      <a href="post-job.html">Post a Job</a>
+      <a href="about.html">About us</a>
+      <a href="contact.html">Contact us</a>
+    </nav>
+  </footer>
+
+  <script src="js/store.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/enhance.js"></script>
+</body>
+</html>

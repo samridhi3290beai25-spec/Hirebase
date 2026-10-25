@@ -1,0 +1,339 @@
+/* ---------- Variables & reset ---------- */
+:root {
+  --color-primary: #0E3B36;
+  --color-accent: #E06A44;
+  --color-bg: #FAF8F3;
+  --color-bg-alt: #FFFFFF;
+  --color-border: #E5E0D3;
+  --color-text: #1A2E2A;
+  --color-text-muted: #5B6C67;
+  --navbar-height: 64px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  padding-top: var(--navbar-height); /* offset for the fixed navbar */
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- Navbar (position fixed, appears on every page) ---------- */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--navbar-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  background-color: var(--color-nav-bg);
+  color: var(--color-nav-text);
+  border-bottom: 1px solid var(--color-border);
+  z-index: 100;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: bold;
+  font-size: 18px;
+  letter-spacing: 0.5px;
+  color: var(--color-nav-text);
+}
+
+.brand-logo {
+  width: 26px;
+  height: 26px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  list-style: none;
+  font-size: 14px;
+}
+
+.nav-links a {
+  opacity: 0.9;
+  color: var(--color-nav-text);
+}
+
+.nav-links a:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+.btn-signup {
+  background-color: var(--color-accent);
+  color: #fff !important;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 600;
+  transition: opacity 0.15s ease;
+}
+
+.btn-signup:hover {
+  opacity: 0.92;
+  text-decoration: none;
+}
+
+/* ---------- Logout banner ---------- */
+.logout-banner {
+  background-color: var(--logout-banner-bg);
+  color: var(--logout-banner-text);
+  border-bottom: 1px solid var(--logout-banner-border);
+  padding: 12px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+/* Without this, [hidden] loses to the rule above (same specificity,
+   but author CSS beats the browser's built-in [hidden] style), so
+   the banner would stay visible even after Index.js hides it. */
+.logout-banner[hidden] {
+  display: none;
+}
+
+.logout-banner button {
+  background: none;
+  border: none;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--logout-banner-text);
+  cursor: pointer;
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  text-align: center;
+  padding: 64px 24px 48px;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.eyebrow {
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-primary-text);
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.hero h1 {
+  font-size: 36px;
+  line-height: 1.25;
+  margin-bottom: 16px;
+  color: var(--color-text);
+}
+
+.hero-subtext {
+  color: var(--color-text-muted);
+  font-size: 15px;
+  margin-bottom: 28px;
+}
+
+.search-form {
+  display: flex;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.search-form input {
+  flex: 1;
+  border: 1px solid var(--color-border);
+  border-right: none;
+  border-radius: 4px 0 0 4px;
+  padding: 12px 14px;
+  font-size: 14px;
+  background-color: var(--input-bg);
+  color: var(--color-text);
+}
+
+.search-form input:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -2px;
+}
+
+.search-form button {
+  background-color: var(--color-accent);
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 0 4px 4px 0;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.search-form button:hover {
+  opacity: 0.92;
+}
+
+/* ---------- Categories ---------- */
+.categories {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background-color: var(--color-border);
+  margin: 0 32px 48px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.category-card {
+  background-color: var(--color-bg-alt);
+  text-align: center;
+  padding: 20px 10px;
+  border: none;
+  width: 100%;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.category-card:hover,
+.category-card.active {
+  background-color: var(--color-bg);
+}
+
+.category-card h2 {
+  font-size: 20px;
+  color: var(--color-primary-text);
+}
+
+.category-card p {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: 4px;
+}
+
+/* ---------- Job cards (base styles; extended for the interactive
+   job board by css/jobs.css) ---------- */
+.job-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.job-card {
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 18px;
+  background-color: var(--color-bg-alt);
+  box-shadow: var(--card-shadow);
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.job-card:hover {
+  box-shadow: var(--card-shadow-hover);
+}
+
+.job-card h3 {
+  font-size: 15px;
+  margin-bottom: 6px;
+  color: var(--color-text);
+}
+
+.job-meta {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin-bottom: 12px;
+}
+
+.tag {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  display: inline-block;
+  font-weight: 500;
+}
+
+.tag-fulltime {
+  background-color: var(--tag-fulltime-bg);
+  color: var(--tag-fulltime-text);
+  border: 1px solid var(--tag-fulltime-border);
+}
+
+.tag-internship {
+  background-color: var(--tag-internship-bg);
+  color: var(--tag-internship-text);
+  border: 1px solid var(--tag-internship-border);
+}
+
+/* ---------- Footer ---------- */
+footer {
+  background-color: var(--color-footer-bg);
+  color: var(--color-footer-text);
+  border-top: 1px solid var(--color-border);
+  padding: 24px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 18px;
+}
+
+.footer-links a {
+  color: var(--color-footer-text);
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 720px) {
+  .nav-links {
+    gap: 12px;
+    font-size: 12px;
+  }
+  .categories {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .job-grid {
+    grid-template-columns: 1fr;
+  }
+  .hero h1 {
+    font-size: 26px;
+  }
+  footer {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+}

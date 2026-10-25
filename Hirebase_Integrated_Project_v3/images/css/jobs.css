@@ -1,0 +1,557 @@
+/* ============================================================
+   Interactive job board — filters, tabs, sort, job cards,
+   salary estimator, and the details / Easy Apply modals.
+   Loaded on Index.html only, after Index.css and theme.css.
+   ============================================================ */
+
+/* ---------- Section shell ---------- */
+.jobs-board {
+  padding: 0 32px 64px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.jobs-board-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.jobs-board-head h2 {
+  font-size: 22px;
+  color: var(--color-text);
+}
+
+/* ---------- Tabs ---------- */
+.jobs-tabs {
+  display: flex;
+  gap: 6px;
+  background-color: var(--color-bg-alt);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 4px;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  padding: 8px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.tab-btn:hover {
+  color: var(--color-text);
+}
+
+.tab-btn.active {
+  background-color: var(--color-primary);
+  color: #fff;
+}
+
+.tab-count {
+  font-size: 11px;
+  background-color: rgba(127, 127, 127, 0.18);
+  border-radius: 10px;
+  padding: 1px 7px;
+}
+
+.tab-btn.active .tab-count {
+  background-color: rgba(255, 255, 255, 0.22);
+}
+
+/* ---------- Layout: filters sidebar + results ---------- */
+.jobs-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.jobs-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: sticky;
+  top: calc(var(--navbar-height) + 16px);
+}
+
+.filters-card {
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background-color: var(--color-bg-alt);
+  padding: 18px;
+  box-shadow: var(--card-shadow);
+}
+
+.filters-card h3 {
+  font-size: 14px;
+  color: var(--color-text);
+}
+
+.filters-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.reset-btn {
+  background: none;
+  border: none;
+  color: var(--color-accent);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.reset-btn:hover {
+  text-decoration: underline;
+  color: var(--color-accent-hover);
+}
+
+.filter-group {
+  margin-bottom: 18px;
+}
+
+.filter-group:last-child {
+  margin-bottom: 0;
+}
+
+.filter-label {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--color-text-muted);
+  margin-bottom: 10px;
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  padding: 5px 0;
+  cursor: pointer;
+  color: var(--color-text);
+}
+
+.checkbox-row input {
+  accent-color: var(--color-accent);
+  width: 15px;
+  height: 15px;
+}
+
+.count-pill {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--color-text-muted);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 1px 7px;
+}
+
+/* ---------- Range slider ---------- */
+.range-slider {
+  width: 100%;
+  accent-color: var(--color-accent);
+  margin-bottom: 8px;
+}
+
+.range-values {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+.range-values #salary-range-val {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+/* ---------- Skill pills ---------- */
+.skill-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.skill-pill {
+  font-size: 12px;
+  padding: 5px 11px;
+  border-radius: 14px;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  background-color: var(--color-bg-alt);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.skill-pill:hover {
+  border-color: var(--color-accent);
+  color: var(--color-text);
+}
+
+.skill-pill.active {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+
+/* ---------- Salary estimator ---------- */
+.salary-estimator .field {
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.salary-estimator label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.salary-estimator select {
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 8px 10px;
+  font-size: 13px;
+  font-family: inherit;
+  background-color: var(--input-bg);
+  color: var(--color-text);
+}
+
+.estimate-box {
+  background-color: var(--color-bg);
+  border: 1px dashed var(--color-border);
+  border-radius: 6px;
+  padding: 12px;
+  text-align: center;
+}
+
+.estimate-label {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  margin-bottom: 4px;
+}
+
+.estimate-amount {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--color-primary-text);
+}
+
+/* ---------- Results toolbar ---------- */
+.jobs-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.sort-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sort-label select {
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 13px;
+  font-family: inherit;
+  background-color: var(--input-bg);
+  color: var(--color-text);
+}
+
+/* ---------- Job cards (extends .job-grid / .job-card from Index.css) ---------- */
+.jobs-main .job-grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.job-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: var(--card-shadow);
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.job-card:hover {
+  box-shadow: var(--card-shadow-hover);
+  border-color: var(--color-border-hover, var(--color-border));
+}
+
+.job-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.job-card-top h3 {
+  margin-bottom: 4px;
+}
+
+.save-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.save-btn:hover {
+  transform: scale(1.1);
+  color: var(--color-accent);
+}
+
+.save-btn.saved {
+  color: var(--color-accent);
+}
+
+.job-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag-salary {
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+}
+
+.tag-contract {
+  background-color: var(--tag-contract-bg);
+  color: var(--tag-contract-text);
+  border: 1px solid var(--tag-contract-border);
+}
+
+.job-skills {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.job-card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+.btn-details,
+.btn-apply {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s ease;
+}
+
+.btn-details {
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.btn-details:hover {
+  background-color: var(--color-border);
+}
+
+.btn-apply {
+  background-color: var(--color-accent);
+  border: none;
+  color: #fff;
+}
+
+.btn-apply:hover {
+  opacity: 0.92;
+  background-color: var(--color-accent-hover);
+}
+
+.btn-apply.applied {
+  background-color: rgba(46, 125, 91, 0.85);
+  color: #fff;
+  cursor: default;
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 14px;
+  padding: 40px 20px;
+  border: 1px dashed var(--color-border);
+  border-radius: 6px;
+}
+
+/* ---------- Details modal content (rendered by jobs.js) ---------- */
+.details-title {
+  font-size: 20px;
+  margin-bottom: 4px;
+  padding-right: 20px;
+  color: var(--color-text);
+}
+
+.details-company {
+  color: var(--color-text-muted);
+  font-size: 14px;
+  margin-bottom: 14px;
+}
+
+.details-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
+.details-section {
+  margin-bottom: 16px;
+}
+
+.details-section h4 {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--color-primary-text);
+  margin-bottom: 6px;
+}
+
+.details-section p,
+.details-section li {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-text);
+}
+
+.details-section ul {
+  padding-left: 18px;
+}
+
+.details-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.details-actions .save-btn {
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 9px 14px;
+  font-size: 18px;
+}
+
+/* ---------- Easy Apply modal form ---------- */
+.apply-subtext {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin-bottom: 20px;
+}
+
+#apply-form .field {
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#apply-form label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+#apply-form input {
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-family: inherit;
+  background-color: var(--input-bg);
+  color: var(--color-text);
+}
+
+#apply-form input:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -1px;
+}
+
+.form-message {
+  min-height: 18px;
+  font-size: 13px;
+  color: var(--color-danger);
+  margin-bottom: 8px;
+}
+
+.form-message.success {
+  color: #2DD4BF;
+}
+
+#apply-form button[type="submit"] {
+  width: 100%;
+  background-color: var(--color-accent);
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background-color 0.15s ease;
+}
+
+#apply-form button[type="submit"]:hover {
+  background-color: var(--color-accent-hover);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+  .jobs-layout {
+    grid-template-columns: 1fr;
+  }
+  .jobs-filters {
+    position: static;
+  }
+  .jobs-main .job-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .jobs-board-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .jobs-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}

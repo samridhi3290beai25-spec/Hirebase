@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notifications &amp; Alerts - Hirebase</title>
+  <meta name="description" content="View your latest company suggestions, application status updates, and salary alerts on Hirebase." />
+  <link rel="icon" type="image/svg+xml" href="images/logo.svg" />
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("hb_theme");
+        if (t === "dark") document.documentElement.setAttribute("data-theme", "dark");
+        var loggedIn = localStorage.getItem("hb_logged_in") === "true";
+        document.documentElement.setAttribute("data-user-logged-in", loggedIn ? "true" : "false");
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="css/theme.css" />
+  <link rel="stylesheet" href="css/enhance.css" />
+  <link rel="stylesheet" href="css/Index.css" />
+  <style>
+    .notif-main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 48px 24px;
+    }
+
+    .notif-hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 32px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .notif-hero h1 {
+      font-family: var(--font-heading);
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .btn-mark-read {
+      background: var(--color-accent-soft);
+      color: var(--color-accent);
+      border: 1px solid var(--color-accent);
+      padding: 8px 16px;
+      border-radius: var(--radius-full);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .btn-mark-read:hover {
+      background: var(--color-accent);
+      color: #FFFFFF;
+    }
+
+    /* Filter Tabs */
+    .notif-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .notif-tab {
+      background-color: var(--color-card) !important;
+      border: 1px solid var(--color-border) !important;
+      color: var(--color-text-muted) !important;
+      padding: 8px 18px !important;
+      border-radius: var(--radius-full) !important;
+      font-size: 13px !important;
+      font-weight: 600 !important;
+      cursor: pointer !important;
+      transition: all var(--transition-fast) !important;
+    }
+
+    .notif-tab:hover {
+      color: var(--color-text) !important;
+      background-color: var(--color-accent-soft) !important;
+    }
+
+    .notif-tab.active {
+      background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%) !important;
+      border-color: #6366F1 !important;
+      color: #FFFFFF !important;
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4) !important;
+    }
+
+    /* Dark Mode Direct Overrides for Notifications Page */
+    [data-theme="dark"] .notif-tab {
+      background-color: #151D2A !important;
+      border-color: #2A364F !important;
+      color: #94A3B8 !important;
+    }
+
+    [data-theme="dark"] .notif-tab:hover {
+      color: #FFFFFF !important;
+      background-color: rgba(129, 140, 248, 0.18) !important;
+      border-color: #3B4C6B !important;
+    }
+
+    [data-theme="dark"] .notif-tab.active {
+      background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%) !important;
+      border-color: #6366F1 !important;
+      color: #FFFFFF !important;
+      box-shadow: 0 4px 16px rgba(99, 102, 241, 0.45) !important;
+    }
+
+    /* Notifications Feed */
+    .notif-feed {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .notif-card {
+      background: var(--color-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      box-shadow: var(--shadow-sm);
+      transition: all var(--transition-normal);
+      position: relative;
+    }
+
+    .notif-card.unread {
+      border-left: 4px solid var(--color-accent);
+      background: linear-gradient(90deg, var(--color-accent-soft) 0%, var(--color-card) 20%);
+    }
+
+    [data-theme="dark"] .notif-card {
+      background-color: #151D2A !important;
+      border-color: #2A364F !important;
+      color: #F1F5F9 !important;
+    }
+
+    [data-theme="dark"] .notif-card.unread {
+      border-left: 4px solid #818CF8 !important;
+      background: linear-gradient(90deg, rgba(129, 140, 248, 0.18) 0%, #151D2A 30%) !important;
+    }
+
+    .notif-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .notif-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .icon-suggestion { background: var(--color-accent-soft); color: var(--color-accent); }
+    .icon-application { background: var(--color-success-bg); color: var(--color-success); }
+    .icon-alert { background: var(--color-warning-bg); color: var(--color-warning); }
+
+    .notif-content {
+      flex: 1;
+    }
+
+    .notif-title {
+      font-family: var(--font-heading);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--color-text);
+      line-height: 1.3;
+    }
+
+    .notif-body {
+      font-size: 14px;
+      color: var(--color-text-muted);
+      margin-top: 4px;
+      line-height: 1.5;
+    }
+
+    .notif-time {
+      font-size: 12px;
+      color: var(--color-text-muted);
+      font-weight: 500;
+      margin-top: 8px;
+    }
+
+    .notif-action-btn {
+      margin-top: 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--color-accent);
+    }
+
+    .notif-action-btn:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Header (Touch-Scrollable Navbar) -->
+  <header class="header-bar">
+    <nav class="navbar">
+      <a href="Index.html" class="brand">
+        <img src="images/logo.svg" alt="Hirebase logo" class="brand-logo" />
+        <span>Hirebase</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="Index.html">Home</a></li>
+        <li><a href="suggestions.html">Suggestions</a></li>
+        <li><a href="notifications.html" class="active-link">Notifications <span class="nav-notif-badge" style="background: var(--color-accent); color: #fff; border-radius: 10px; padding: 1px 6px; font-size: 11px;">3</span></a></li>
+        <li><a href="apply-job.html">Seeker Portal</a></li>
+        <li><a href="post-job.html">Post a Job</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+
+      <div class="nav-controls">
+        <ul class="auth-links">
+          <li class="auth-guest"><a href="signin.html">Sign in</a></li>
+          <li class="auth-guest"><a href="signup.html" class="btn-signup">Sign up</a></li>
+          <li class="auth-user"><a href="apply-job.html" class="profile-link"><span class="profile-avatar">JL</span><span>Jordan Lee</span><span class="online-dot"></span></a></li>
+          <li class="auth-user"><a href="Index.html?logout=success" class="logout-link">Logout</a></li>
+        </ul>
+        <button id="theme-toggle" class="theme-toggle-btn" type="button" aria-label="Toggle dark mode">☾</button>
+      </div>
+    </nav>
+  </header>
+
+  <main class="notif-main">
+    <div class="notif-hero">
+      <div>
+        <h1>Notifications &amp; Alerts</h1>
+        <p style="color: var(--color-text-muted); font-size: 14px; margin-top: 4px;">Track company recommendations, application status updates, and salary trends.</p>
+      </div>
+      <button class="btn-mark-read" onclick="markAllRead()">✓ Mark all as read</button>
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="notif-tabs">
+      <button class="notif-tab active" onclick="filterNotifs('all')">All Notifications (8)</button>
+      <button class="notif-tab" onclick="filterNotifs('suggestion')">Company Suggestions (3)</button>
+      <button class="notif-tab" onclick="filterNotifs('application')">Application Status (3)</button>
+      <button class="notif-tab" onclick="filterNotifs('alert')">Salary &amp; Market Alerts (2)</button>
+    </div>
+
+    <!-- Notifications List -->
+    <div class="notif-feed" id="notif-feed">
+
+      <!-- 1. Company Suggestion -->
+      <article class="notif-card unread" data-nid="n1" data-type="suggestion">
+        <div class="notif-icon icon-suggestion">🌟</div>
+        <div class="notif-content">
+          <div class="notif-title">New Company Suggestion: Cursive Payments</div>
+          <div class="notif-body">Cursive Payments posted 2 new Senior Node.js Engineer positions matching 96% of your profile.</div>
+          <div class="notif-time">2 hours ago</div>
+          <a href="Index.html?q=Cursive" class="notif-action-btn">View Roles &rarr;</a>
+        </div>
+      </article>
+
+      <!-- 2. Application Status -->
+      <article class="notif-card unread" data-nid="n2" data-type="application">
+        <div class="notif-icon icon-application">📄</div>
+        <div class="notif-content">
+          <div class="notif-title">Application Status Update</div>
+          <div class="notif-body">Your application for Product Designer at <strong>Nimbus Labs</strong> was reviewed by hiring manager Sarah Vance.</div>
+          <div class="notif-time">4 hours ago</div>
+          <a href="apply-job.html" class="notif-action-btn">View Application Details &rarr;</a>
+        </div>
+      </article>
+
+      <!-- 3. Company Alert -->
+      <article class="notif-card unread" data-nid="n3" data-type="suggestion">
+        <div class="notif-icon icon-suggestion">🚀</div>
+        <div class="notif-content">
+          <div class="notif-title">Company Spotlight: OpenLoop AI</div>
+          <div class="notif-body">OpenLoop AI launched a new AI Research Fellowship with remote engineering options.</div>
+          <div class="notif-time">Yesterday</div>
+          <a href="suggestions.html" class="notif-action-btn">Explore Company &rarr;</a>
+        </div>
+      </article>
+
+      <!-- 4. Salary Trend Alert -->
+      <article class="notif-card" data-nid="n4" data-type="alert">
+        <div class="notif-icon icon-alert">💰</div>
+        <div class="notif-content">
+          <div class="notif-title">Salary Benchmark Increase</div>
+          <div class="notif-body">Market salary benchmarks for <strong>Senior React Engineers</strong> increased by <strong>+12%</strong> ($110k - $145k) this quarter.</div>
+          <div class="notif-time">2 days ago</div>
+        </div>
+      </article>
+
+      <!-- 5. Interview Invite -->
+      <article class="notif-card" data-nid="n5" data-type="application">
+        <div class="notif-icon icon-application">✉️</div>
+        <div class="notif-content">
+          <div class="notif-title">Interview Invitation from Petal &amp; Co</div>
+          <div class="notif-body">Petal &amp; Co invited you to a 30-minute intro call for the Growth Marketing Manager position.</div>
+          <div class="notif-time">3 days ago</div>
+          <a href="apply-job.html" class="notif-action-btn">Respond to Invite &rarr;</a>
+        </div>
+      </article>
+
+      <!-- 6. Company Suggestion -->
+      <article class="notif-card" data-nid="n6" data-type="suggestion">
+        <div class="notif-icon icon-suggestion">🌟</div>
+        <div class="notif-content">
+          <div class="notif-title">Recommended Employer: Quantum Mind Labs</div>
+          <div class="notif-body">Quantum Mind Labs matched your profile for AI Research Engineer ($150k - $190k).</div>
+          <div class="notif-time">4 days ago</div>
+          <a href="suggestions.html" class="notif-action-btn">View Suggestion &rarr;</a>
+        </div>
+      </article>
+
+      <!-- 7. Saved Job Update -->
+      <article class="notif-card" data-nid="n7" data-type="application">
+        <div class="notif-icon icon-alert">📌</div>
+        <div class="notif-content">
+          <div class="notif-title">Saved Job Update: DevOps Engineer</div>
+          <div class="notif-body">DevOps Engineer at Nexus Systems was updated with a new salary range ($110k - $145k).</div>
+          <div class="notif-time">5 days ago</div>
+          <a href="Index.html?q=DevOps" class="notif-action-btn">View Job &rarr;</a>
+        </div>
+      </article>
+
+      <!-- 8. Skill Recommendation -->
+      <article class="notif-card" data-nid="n8" data-type="alert">
+        <div class="notif-icon icon-alert">🎯</div>
+        <div class="notif-content">
+          <div class="notif-title">Skill Profile Optimization</div>
+          <div class="notif-body">Adding <strong>TypeScript</strong> to your candidate profile increased your match rate by +18% across 14 companies.</div>
+          <div class="notif-time">1 week ago</div>
+        </div>
+      </article>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-brand">
+      <img src="images/logo.svg" alt="Hirebase" width="24" height="24" />
+      <span>Hirebase</span>
+    </div>
+    <p>&copy; 2026 Hirebase Inc. All rights reserved.</p>
+    <nav class="footer-links" aria-label="Footer Navigation">
+      <a href="Index.html">Home</a>
+      <a href="suggestions.html">Suggestions</a>
+      <a href="notifications.html">Notifications</a>
+      <a href="apply-job.html">Seeker Portal</a>
+      <a href="post-job.html">Post a Job</a>
+      <a href="about.html">About us</a>
+      <a href="contact.html">Contact us</a>
+    </nav>
+  </footer>
+
+  <script src="js/store.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/enhance.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const feed = document.getElementById("notif-feed");
+      const user = window.HirebaseStore ? window.HirebaseStore.getCurrentUser() : null;
+
+      if (user && user.role === "seeker" && feed) {
+        const apps = window.HirebaseStore.getApplicationsByCandidate(user.id);
+        if (apps.length > 0) {
+          // Prepend candidate's actual applications to the feed
+          const appCardsHtml = apps.map(app => `
+            <article class="notif-card unread" data-nid="app-${app.id}" data-type="application">
+              <div class="notif-icon icon-application">📄</div>
+              <div class="notif-content">
+                <div class="notif-title">Application Status Update: ${app.jobTitle}</div>
+                <div class="notif-body">Your application to <strong>${app.company}</strong> is currently <strong>${app.status}</strong>.</div>
+                <div class="notif-time">Submitted ${new Date(app.appliedAt).toLocaleDateString()}</div>
+                <a href="apply-job.html" class="notif-action-btn">View Live Status &rarr;</a>
+              </div>
+            </article>
+          `).join("");
+
+          feed.insertAdjacentHTML("afterbegin", appCardsHtml);
+        }
+      }
+
+      updateTabCounts();
+    });
+
+    function updateTabCounts() {
+      const all = document.querySelectorAll(".notif-card").length;
+      const sugg = document.querySelectorAll('.notif-card[data-type="suggestion"]').length;
+      const app = document.querySelectorAll('.notif-card[data-type="application"]').length;
+      const alertCnt = document.querySelectorAll('.notif-card[data-type="alert"]').length;
+
+      const tabs = document.querySelectorAll(".notif-tab");
+      if (tabs.length >= 4) {
+        tabs[0].textContent = `All Notifications (${all})`;
+        tabs[1].textContent = `Company Suggestions (${sugg})`;
+        tabs[2].textContent = `Application Status (${app})`;
+        tabs[3].textContent = `Salary & Market Alerts (${alertCnt})`;
+      }
+    }
+
+    function filterNotifs(type) {
+      document.querySelectorAll('.notif-tab').forEach(t => t.classList.remove('active'));
+      event.target.classList.add('active');
+      const cards = document.querySelectorAll('.notif-card');
+      cards.forEach(card => {
+        if (type === 'all' || card.getAttribute('data-type') === type) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    function markAllRead() {
+      document.querySelectorAll('.notif-card').forEach(card => {
+        card.classList.remove('unread');
+      });
+      const btn = document.querySelector(".btn-mark-read");
+      if (btn) {
+        btn.textContent = "✓ All marked as read";
+        setTimeout(() => { btn.textContent = "✓ Mark all as read"; }, 2000);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact us - Hirebase</title>
+  <meta name="description" content="Get in touch with the Hirebase support and partnership team." />
+  <link rel="icon" type="image/svg+xml" href="images/logo.svg" />
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("hb_theme");
+        if (t === "dark") document.documentElement.setAttribute("data-theme", "dark");
+        var loggedIn = localStorage.getItem("hb_logged_in") === "true";
+        document.documentElement.setAttribute("data-user-logged-in", loggedIn ? "true" : "false");
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="css/theme.css" />
+  <link rel="stylesheet" href="css/enhance.css" />
+  <link rel="stylesheet" href="css/contact.css" />
+</head>
+<body>
+
+  <!-- Navigation Header (Touch-Scrollable Navbar) -->
+  <header class="header-bar">
+    <nav class="navbar">
+      <a href="Index.html" class="brand">
+        <img src="images/logo.svg" alt="Hirebase logo" class="brand-logo" />
+        <span>Hirebase</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="Index.html">Home</a></li>
+        <li><a href="suggestions.html">Suggestions</a></li>
+        <li><a href="notifications.html">Notifications <span class="nav-notif-badge" style="background: var(--color-accent); color: #fff; border-radius: 10px; padding: 1px 6px; font-size: 11px;">3</span></a></li>
+        <li><a href="apply-job.html">Seeker Portal</a></li>
+        <li><a href="post-job.html">Post a Job</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html" class="active-link">Contact</a></li>
+      </ul>
+
+      <div class="nav-controls">
+        <ul class="auth-links">
+          <li class="auth-guest"><a href="signin.html">Sign in</a></li>
+          <li class="auth-guest"><a href="signup.html" class="btn-signup">Sign up</a></li>
+          <li class="auth-user"><a href="apply-job.html" class="profile-link"><span class="profile-avatar">JL</span><span>Jordan Lee</span><span class="online-dot"></span></a></li>
+          <li class="auth-user"><a href="Index.html?logout=success" class="logout-link">Logout</a></li>
+        </ul>
+        <button id="theme-toggle" class="theme-toggle-btn" type="button" aria-label="Toggle dark mode">☾</button>
+      </div>
+    </nav>
+  </header>
+
+  <main class="contact-main">
+    <section class="contact-intro">
+      <h1>We'd Love to Hear From You</h1>
+      <p>Have questions, feedback, or partnership inquiries? Send us a message and our team will respond within 24 hours.</p>
+    </section>
+
+    <div class="contact-grid-wrap">
+      <!-- Info Cards Sidebar -->
+      <div class="contact-info-cards">
+        <div class="info-card">
+          <div class="info-icon">✉️</div>
+          <div class="info-text">
+            <h3>Email Us</h3>
+            <p>support@hirebase.com</p>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon">🏢</div>
+          <div class="info-text">
+            <h3>Headquarters</h3>
+            <p>Bengaluru Tech Hub, Karnataka, IN</p>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon">⏱️</div>
+          <div class="info-text">
+            <h3>Response Time</h3>
+            <p>Average response within 2-4 hours on business days.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Form Card -->
+      <section class="contact-card">
+        <form id="contact-form" novalidate>
+          <div class="field">
+            <label for="contact-name">Your Full Name</label>
+            <input type="text" id="contact-name" name="name" placeholder="Jordan Lee" required />
+          </div>
+
+          <div class="field">
+            <label for="contact-email">Email Address</label>
+            <input type="email" id="contact-email" name="email" placeholder="you@email.com" required />
+          </div>
+
+          <div class="field">
+            <label for="contact-dept">Topic / Department</label>
+            <select id="contact-dept">
+              <option value="candidate">Candidate Support &amp; Job Search</option>
+              <option value="employer">Employer Hiring &amp; Postings</option>
+              <option value="bug">Report a Bug / Platform Feedback</option>
+              <option value="partnership">Partnership &amp; Media</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="contact-message">Your Message</label>
+            <textarea id="contact-message" name="message" rows="5" placeholder="Tell us how we can help..." required></textarea>
+          </div>
+
+          <p id="contact-status" class="form-message" role="alert"></p>
+
+          <button type="submit">Send Message</button>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Hirebase Inc.</p>
+    <nav class="footer-links" aria-label="Footer Navigation">
+      <a href="Index.html">Home</a>
+      <a href="suggestions.html">Suggestions</a>
+      <a href="notifications.html">Notifications</a>
+      <a href="apply-job.html">Seeker Portal</a>
+      <a href="post-job.html">Post a Job</a>
+      <a href="about.html">About us</a>
+      <a href="contact.html">Contact us</a>
+    </nav>
+  </footer>
+
+  <script src="js/store.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/enhance.js"></script>
+  <script src="js/contact.js"></script>
+</body>
+</html>

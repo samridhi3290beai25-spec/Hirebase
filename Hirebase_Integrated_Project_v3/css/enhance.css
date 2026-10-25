@@ -1,0 +1,234 @@
+/* ============================================================
+   Hirebase — JS enhancement styles (enhance.js / jobs.js)
+   Uses only the existing theme variables, so layout and colors
+   of the site are unchanged. Light + dark mode work automatically.
+   ============================================================ */
+
+/* ---------- Scroll reveal ---------- */
+html.hb-reveal-ready .hb-reveal:not(.hb-in) {
+  opacity: 0;
+  transform: translateY(26px);
+}
+html.hb-reveal-ready .hb-reveal {
+  transition: opacity 0.65s ease, transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---------- Notification badge bump ---------- */
+.nav-notif-badge.hb-bump {
+  animation: hb-bump 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes hb-bump {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.5); }
+  100% { transform: scale(1); }
+}
+
+/* ---------- Recent searches (inside the existing suggestion box) ---------- */
+.recent-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+.recent-clear,
+.recent-remove {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  color: var(--color-text-muted);
+  transition: color 0.15s ease, background 0.15s ease;
+}
+.recent-clear {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+.recent-clear:hover { color: var(--color-accent); background: var(--color-accent-soft); }
+.recent-remove {
+  font-size: 12px;
+  line-height: 1;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.recent-remove:hover { color: var(--color-danger); background: var(--color-accent-soft); }
+
+/* ---------- Skeleton loaders (job cards) ---------- */
+.skeleton-card { pointer-events: none; }
+.sk {
+  display: block;
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--color-border) 0%, var(--color-accent-soft) 50%, var(--color-border) 100%);
+  background-size: 200% 100%;
+  animation: hb-shimmer 1.3s linear infinite;
+}
+.sk-title { height: 18px; width: 68%; margin-bottom: 10px; }
+.sk-meta { height: 12px; width: 44%; }
+.sk-star { height: 26px; width: 26px; border-radius: 50%; }
+.sk-tags { display: flex; gap: 8px; margin: 16px 0 14px; }
+.sk-pill { height: 22px; width: 76px; border-radius: 999px; }
+.sk-pill.sk-pill-wide { width: 104px; }
+.sk-line { height: 12px; width: 82%; margin-bottom: 18px; }
+.sk-actions { display: flex; gap: 10px; }
+.sk-btn { height: 38px; flex: 1; border-radius: 10px; }
+@keyframes hb-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ---------- Password strength meter ---------- */
+.pw-meter { margin-top: 10px; }
+.pw-meter[hidden] { display: none; }
+.pw-bars { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.pw-bars span {
+  height: 5px;
+  border-radius: 999px;
+  background: var(--color-border);
+  transition: background 0.3s ease;
+}
+.pw-meter.pw-l1 .pw-bars span:nth-child(-n+1) { background: var(--color-danger); }
+.pw-meter.pw-l2 .pw-bars span:nth-child(-n+2) { background: var(--color-warning); }
+.pw-meter.pw-l3 .pw-bars span:nth-child(-n+3) { background: var(--color-teal); }
+.pw-meter.pw-l4 .pw-bars span:nth-child(-n+4) { background: var(--color-success); }
+.pw-info {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.pw-text { font-weight: 700; white-space: nowrap; color: var(--color-text-muted); }
+.pw-meter.pw-l1 .pw-text { color: var(--color-danger); }
+.pw-meter.pw-l2 .pw-text { color: var(--color-warning); }
+.pw-meter.pw-l3 .pw-text { color: var(--color-teal); }
+.pw-meter.pw-l4 .pw-text { color: var(--color-success); }
+.pw-hint { color: var(--color-text-muted); text-align: right; }
+
+/* ---------- Confetti canvas ---------- */
+.hb-confetti {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10001;
+}
+
+/* ---------- Respect "reduce motion" ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .sk { animation: none; }
+  .nav-notif-badge.hb-bump { animation: none; }
+  html.hb-reveal-ready .hb-reveal { transition: none; }
+}
+
+/* ============================================================
+   v3 additions
+   ============================================================ */
+
+/* ---------- Scroll progress bar ---------- */
+.hb-progress {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 3px;
+  z-index: 10002;
+  background: linear-gradient(90deg, var(--color-accent), var(--color-teal));
+  transform: scaleX(0);
+  transform-origin: left;
+  pointer-events: none;
+}
+
+/* ---------- Back to top ---------- */
+.hb-top {
+  position: fixed;
+  right: 22px; bottom: 22px;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: var(--color-accent);
+  color: #fff;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+  z-index: 9000;
+  opacity: 0;
+  transform: translateY(16px) scale(0.8);
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease, background 0.15s ease;
+}
+.hb-top.hb-top-show { opacity: 1; transform: none; pointer-events: auto; }
+.hb-top:hover { background: var(--color-accent-hover); transform: translateY(-3px); }
+
+/* ---------- Password eye + caps lock ---------- */
+.hb-pw-wrap { position: relative; display: block; }
+.hb-pw-wrap input { width: 100%; padding-right: 46px !important; box-sizing: border-box; }
+.hb-eye {
+  position: absolute;
+  top: 50%; right: 8px;
+  transform: translateY(-50%);
+  width: 34px; height: 34px;
+  border: none; border-radius: 8px;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 17px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.15s ease, background 0.15s ease;
+}
+.hb-eye:hover { opacity: 1; background: var(--color-accent-soft); }
+.hb-eye.on { opacity: 1; color: var(--color-accent); }
+.hb-caps, .hb-match { margin-top: 6px; font-size: 12px; font-weight: 600; }
+.hb-caps[hidden], .hb-match[hidden] { display: none; }
+.hb-caps { color: var(--color-warning); }
+.hb-match.ok { color: var(--color-success); }
+.hb-match.bad { color: var(--color-danger); }
+
+/* ---------- Character counter ---------- */
+.hb-counter {
+  text-align: right;
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--color-text-muted);
+  transition: color 0.2s ease;
+}
+.hb-counter.warn { color: var(--color-warning); font-weight: 700; }
+
+/* ---------- Ripple ---------- */
+.hb-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  transform: scale(0);
+  animation: hb-ripple 0.6s ease-out forwards;
+  pointer-events: none;
+}
+@keyframes hb-ripple { to { transform: scale(1); opacity: 0; } }
+
+/* ---------- Tab-count pop ---------- */
+.tab-count.hb-pop { display: inline-block; animation: hb-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+@keyframes hb-pop { 0% { transform: scale(1); } 45% { transform: scale(1.45); } 100% { transform: scale(1); } }
+
+/* ---------- Greeting ---------- */
+.hb-greeting {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--color-accent);
+  margin: 0 0 10px;
+  animation: hb-greet 0.7s ease both;
+}
+@keyframes hb-greet { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .hb-top, .hb-ripple, .tab-count.hb-pop, .hb-greeting { animation: none; transition: none; }
+}

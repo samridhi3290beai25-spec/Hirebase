@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Authenticating... - Hirebase Portal</title>
+  <link rel="icon" type="image/svg+xml" href="images/logo.svg" />
+  <link rel="stylesheet" href="css/theme.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      background: #0B0F19;
+      color: #F1F5F9;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Ambient Background Glow */
+    body::before {
+      content: '';
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.28) 0%, rgba(13, 148, 136, 0.15) 45%, transparent 70%);
+      border-radius: 50%;
+      filter: blur(70px);
+      animation: pulse-glow 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulse-glow {
+      0% { transform: scale(0.8); opacity: 0.7; }
+      100% { transform: scale(1.25); opacity: 1; }
+    }
+
+    .loader-card {
+      position: relative;
+      z-index: 10;
+      background: rgba(21, 29, 42, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(16px);
+      border-radius: 24px;
+      padding: 48px 56px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      max-width: 460px;
+      width: 90%;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-wrap img {
+      width: 44px;
+      height: 44px;
+      filter: drop-shadow(0 0 12px rgba(99, 102, 241, 0.8));
+    }
+
+    .brand-wrap span {
+      font-size: 28px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #FFFFFF 0%, #CBD5E1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Dual Ring Spinner */
+    .spinner-wrap {
+      position: relative;
+      width: 76px;
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 8px 0;
+    }
+
+    .spinner-ring {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 4px solid transparent;
+      border-top-color: #6366F1;
+      border-right-color: #6366F1;
+      border-radius: 50%;
+      animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+    }
+
+    .spinner-ring-inner {
+      position: absolute;
+      width: 60%;
+      height: 60%;
+      border: 4px solid transparent;
+      border-bottom-color: #14B8A6;
+      border-left-color: #14B8A6;
+      border-radius: 50%;
+      animation: spin-reverse 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes spin-reverse {
+      to { transform: rotate(-360deg); }
+    }
+
+    .load-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #FFFFFF;
+      letter-spacing: -0.3px;
+    }
+
+    .load-sub {
+      font-size: 14px;
+      color: #94A3B8;
+      line-height: 1.5;
+    }
+
+    /* Animated Loading Progress Bar */
+    .progress-bar-wrap {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #6366F1 0%, #14B8A6 100%);
+      border-radius: 999px;
+      animation: load-progress 2.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    @keyframes load-progress {
+      0% { width: 0%; }
+      50% { width: 65%; }
+      100% { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="loader-card">
+    <div class="brand-wrap">
+      <img src="images/logo.svg" alt="Hirebase logo" />
+      <span>Hirebase</span>
+    </div>
+
+    <div class="spinner-wrap">
+      <div class="spinner-ring"></div>
+      <div class="spinner-ring-inner"></div>
+    </div>
+
+    <div class="load-title" id="auth-status-title">Authenticating Session...</div>
+    <div class="load-sub" id="auth-status-sub">Preparing your personalized candidate dashboard and matching 12,480+ active roles...</div>
+
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill"></div>
+    </div>
+  </div>
+
+  <script src="js/store.js"></script>
+  <script>
+    (function () {
+      try {
+        var params = new URLSearchParams(window.location.search);
+        var type = params.get("type");
+        var titleEl = document.getElementById("auth-status-title");
+        var subEl = document.getElementById("auth-status-sub");
+
+        var user = window.HirebaseStore ? window.HirebaseStore.getCurrentUser() : null;
+        var destination = "Index.html?login=success";
+
+        if (user) {
+          var isProvider = user.role === "provider";
+          destination = isProvider ? "post-job.html?login=success" : "Index.html?login=success";
+
+          if (type === "signup") {
+            titleEl.textContent = "Welcome to Hirebase, " + user.name + "!";
+            subEl.textContent = isProvider
+              ? "Account created. Setting up your Employer Portal for " + (user.company || "your organization") + "..."
+              : "Account created. Setting up your Candidate Profile and job matches...";
+          } else {
+            titleEl.textContent = "Welcome Back, " + user.name + "!";
+            subEl.textContent = isProvider
+              ? "Authenticating credentials and launching your Employer Portal..."
+              : "Authenticating credentials and launching your Job Search Portal...";
+          }
+        } else {
+          destination = "Index.html?login=success";
+        }
+
+        setTimeout(function () {
+          window.location.href = destination;
+        }, 1800);
+      } catch (e) {
+        setTimeout(function () {
+          window.location.href = "Index.html?login=success";
+        }, 1800);
+      }
+    })();
+  </script>
+</body>
+</html>
+

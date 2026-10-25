@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Job Seeker Application Portal - Hirebase</title>
+  <meta name="description" content="Apply directly to top tech, design, and product roles with Hirebase's streamlined job seeker application portal." />
+  <link rel="icon" type="image/svg+xml" href="images/logo.svg" />
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("hb_theme");
+        if (t === "dark") document.documentElement.setAttribute("data-theme", "dark");
+        var loggedIn = localStorage.getItem("hb_logged_in") === "true";
+        document.documentElement.setAttribute("data-user-logged-in", loggedIn ? "true" : "false");
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="css/theme.css" />
+  <link rel="stylesheet" href="css/enhance.css" />
+  <link rel="stylesheet" href="css/Index.css" />
+  <style>
+    .seeker-main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 48px 24px;
+    }
+
+    .seeker-hero {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .seeker-hero h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+
+    .seeker-hero p {
+      color: var(--color-text-muted);
+      font-size: 17px;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .seeker-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    @media (min-width: 900px) {
+      .seeker-grid {
+        grid-template-columns: 1fr 1.4fr;
+      }
+    }
+
+    /* Role Details Card */
+    .role-overview-card {
+      background: var(--color-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      box-shadow: var(--shadow-md);
+      position: sticky;
+      top: calc(var(--navbar-height) + 20px);
+    }
+
+    .role-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .role-header h2 {
+      font-family: var(--font-heading);
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--color-text);
+      line-height: 1.2;
+    }
+
+    .company-sub {
+      color: var(--color-text-muted);
+      font-size: 14px;
+      font-weight: 500;
+      margin-top: 4px;
+    }
+
+    .role-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .role-badge {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .badge-teal { background: var(--color-teal-soft); color: var(--color-teal); }
+    .badge-indigo { background: var(--color-accent-soft); color: var(--color-accent); }
+    .badge-green { background: var(--color-success-bg); color: var(--color-success); }
+    .badge-amber { background: var(--color-warning-bg); color: var(--color-warning); }
+
+    .role-section {
+      margin-bottom: 20px;
+    }
+
+    .role-section h3 {
+      font-family: var(--font-heading);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--color-accent);
+      margin-bottom: 8px;
+    }
+
+    .role-section p, .role-section li {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--color-text);
+    }
+
+    .role-section ul {
+      padding-left: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    /* Candidate Application Form Card */
+    .application-form-card {
+      background: var(--color-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 36px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .form-head {
+      margin-bottom: 28px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .form-head h2 {
+      font-family: var(--font-heading);
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--color-text);
+    }
+
+    .form-head p {
+      font-size: 14px;
+      color: var(--color-text-muted);
+      margin-top: 4px;
+    }
+
+    .form-section-title {
+      font-family: var(--font-heading);
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--color-text-muted);
+      margin: 24px 0 14px;
+    }
+
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .field {
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-text);
+    }
+
+    .field input, .field select, .field textarea {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      font-size: 14px;
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      outline: none;
+      transition: all var(--transition-fast);
+    }
+
+    .field input:focus, .field select:focus, .field textarea:focus {
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 3px var(--color-accent-soft);
+      background-color: var(--color-bg-alt);
+    }
+
+    /* Skills Checkboxes Grid */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      background: var(--color-bg);
+      padding: 14px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      margin-bottom: 16px;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .checkbox-item input {
+      accent-color: var(--color-accent);
+      width: 16px;
+      height: 16px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--color-accent) 0%, #4F46E5 100%);
+      color: #FFFFFF;
+      border: none;
+      padding: 16px;
+      border-radius: var(--radius-sm);
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(99, 102, 241, 0.35);
+      transition: all var(--transition-normal);
+      margin-top: 20px;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 22px rgba(99, 102, 241, 0.45);
+    }
+
+    .status-msg {
+      margin-top: 14px;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .status-msg.success {
+      color: var(--color-success);
+    }
+
+    @media (max-width: 640px) {
+      .form-grid-2 { grid-template-columns: 1fr; }
+      .skills-grid { grid-template-columns: repeat(2, 1fr); }
+      .application-form-card { padding: 24px 16px; }
+      .role-overview-card { padding: 24px 16px; position: relative; top: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Header (Touch-Scrollable Navbar) -->
+  <header class="header-bar">
+    <nav class="navbar">
+      <a href="Index.html" class="brand">
+        <img src="images/logo.svg" alt="Hirebase logo" class="brand-logo" />
+        <span>Hirebase</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="Index.html">Home</a></li>
+        <li><a href="suggestions.html">Suggestions</a></li>
+        <li><a href="notifications.html">Notifications <span class="nav-notif-badge" style="background: var(--color-accent); color: #fff; border-radius: 10px; padding: 1px 6px; font-size: 11px;">3</span></a></li>
+        <li><a href="apply-job.html" class="active-link">Seeker Portal</a></li>
+        <li><a href="post-job.html">Post a Job</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+
+      <div class="nav-controls">
+        <ul class="auth-links">
+          <li class="auth-guest"><a href="signin.html">Sign in</a></li>
+          <li class="auth-guest"><a href="signup.html" class="btn-signup">Sign up</a></li>
+          <li class="auth-user"><a href="apply-job.html" class="profile-link"><span class="profile-avatar">JL</span><span>Jordan Lee</span><span class="online-dot"></span></a></li>
+          <li class="auth-user"><a href="Index.html?logout=success" class="logout-link">Logout</a></li>
+        </ul>
+        <button id="theme-toggle" class="theme-toggle-btn" type="button" aria-label="Toggle dark mode">☾</button>
+      </div>
+    </nav>
+  </header>
+
+  <main class="seeker-main">
+    <section class="seeker-hero">
+      <h1>Job Seeker Application Portal</h1>
+      <p>Submit your comprehensive application directly to hiring teams with verified salary ranges, equity packages, and visa sponsorship.</p>
+    </section>
+
+    <!-- Seeker Auth Notice when not authenticated as candidate -->
+    <div id="seeker-auth-notice" class="role-overview-card" style="margin-bottom: 28px; display: none; position: static; border-left: 4px solid var(--color-warning);">
+      <h3 style="font-size: 16px; margin-bottom: 6px;">Sign in as a Candidate to Track Applications</h3>
+      <p style="color: var(--color-text-muted); font-size: 14px; margin-bottom: 14px;" id="seeker-auth-msg">
+        You are browsing as a guest. Sign in to pre-fill your saved profile details and track live application statuses.
+      </p>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <a href="signin.html" class="btn-social" style="padding: 8px 18px; font-weight: 700; text-decoration: none;">Sign in</a>
+        <a href="signup.html" class="btn-social" style="padding: 8px 18px; font-weight: 700; text-decoration: none;">Create Account</a>
+        <button type="button" id="btn-quick-candidate-demo" class="btn-social" style="padding: 8px 18px; font-weight: 700; background: var(--color-accent-soft); color: var(--color-accent); border-color: var(--color-accent);">Login Demo Candidate (Jordan Lee)</button>
+      </div>
+    </div>
+
+    <!-- Active Candidate Profile Card -->
+    <div id="seeker-profile-card" class="role-overview-card" style="margin-bottom: 28px; padding: 24px 32px; display: none; position: static;">
+      <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div id="seeker-avatar-badge" class="profile-avatar" style="width: 36px; height: 36px; font-size: 14px; display: flex; align-items: center; justify-content: center; font-weight: 800; border-radius: 50%; background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-teal) 100%); color: #fff;">JL</div>
+            <div>
+              <h2 id="seeker-prof-name" style="font-size: 20px; font-weight: 800; margin: 0;">Jordan Lee</h2>
+              <p id="seeker-prof-title" style="color: var(--color-text-muted); font-size: 13px; margin-top: 2px;">Senior Full Stack Engineer &middot; Bengaluru, IN / Remote</p>
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 16px;">
+          <div style="text-align: center; background: var(--color-bg); padding: 10px 18px; border-radius: var(--radius-md); border: 1px solid var(--color-border);">
+            <div id="seeker-apps-count" style="font-size: 20px; font-weight: 800; color: var(--color-accent);">0</div>
+            <div style="font-size: 12px; color: var(--color-text-muted); font-weight: 600;">Applications</div>
+          </div>
+          <div style="text-align: center; background: var(--color-bg); padding: 10px 18px; border-radius: var(--radius-md); border: 1px solid var(--color-border);">
+            <div id="seeker-saved-count" style="font-size: 20px; font-weight: 800; color: var(--color-teal);">0</div>
+            <div style="font-size: 12px; color: var(--color-text-muted); font-weight: 600;">Saved Roles</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="seeker-grid">
+      <!-- Left Column: Featured Role Overview -->
+      <div class="role-overview-card">
+        <!-- Switch Role selector -->
+        <div style="margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--color-border);">
+          <label for="role-select" style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; color: var(--color-accent);">Select Role To Apply For:</label>
+          <select id="role-select" style="width: 100%; margin-top: 6px; padding: 10px 12px; font-size: 13px; font-weight: 600; border-radius: var(--radius-sm); background: var(--color-bg); color: var(--color-text); border: 1px solid var(--color-border); outline: none;">
+            <!-- Dynamically populated -->
+          </select>
+        </div>
+
+        <div class="role-header">
+          <div>
+            <h2 id="role-title">Senior Full Stack Engineer</h2>
+            <p class="company-sub" id="role-company">Cursive Labs &middot; Remote (India / Global)</p>
+          </div>
+          <span class="role-badge badge-teal" id="role-salary">$120k &ndash; $160k</span>
+        </div>
+
+        <div class="role-badges" id="role-badges">
+          <span class="role-badge badge-indigo">Full-time</span>
+          <span class="role-badge badge-green">Visa Sponsored</span>
+          <span class="role-badge badge-amber">0.25% Equity</span>
+        </div>
+
+        <div class="role-section">
+          <h3>Role Summary</h3>
+          <p id="role-summary">Lead core API architecture and merchant dashboards for a fast-growing payments ecosystem handling over $50M in annual transactions.</p>
+        </div>
+
+        <div class="role-section">
+          <h3>Key Responsibilities</h3>
+          <ul id="role-responsibilities">
+            <li>Design &amp; ship responsive React/TypeScript interfaces</li>
+            <li>Build high-concurrency Node.js microservices &amp; GraphQL APIs</li>
+            <li>Maintain CI/CD pipelines and PostgreSQL data models</li>
+          </ul>
+        </div>
+
+        <div class="role-section">
+          <h3>Requirements &amp; Tech Stack</h3>
+          <ul id="role-requirements">
+            <li>4+ years experience in React, Node.js, and TypeScript</li>
+            <li>Experience with cloud platforms (AWS/GCP) and Docker</li>
+            <li>Strong system design &amp; API security fundamentals</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Right Column: Candidate Application Form -->
+      <div class="application-form-card">
+        <div class="form-head">
+          <h2>Apply For This Position</h2>
+          <p>Fill in your details below to send your profile directly to the engineering team.</p>
+        </div>
+
+        <form id="portal-apply-form">
+          
+          <div class="form-section-title">1. Personal Information</div>
+          <div class="form-grid-2">
+            <div class="field">
+              <label for="seeker-name">Full Name *</label>
+              <input type="text" id="seeker-name" placeholder="Jordan Lee" required />
+            </div>
+            <div class="field">
+              <label for="seeker-email">Email Address *</label>
+              <input type="email" id="seeker-email" placeholder="jordan@email.com" required />
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="field">
+              <label for="seeker-phone">Phone Number *</label>
+              <input type="tel" id="seeker-phone" placeholder="+1 (555) 234-5678" required />
+            </div>
+            <div class="field">
+              <label for="seeker-location">Current Location *</label>
+              <input type="text" id="seeker-location" placeholder="Bengaluru, IN / Remote" required />
+            </div>
+          </div>
+
+          <div class="form-section-title">2. Professional Details</div>
+          <div class="form-grid-2">
+            <div class="field">
+              <label for="seeker-title">Current Role / Title *</label>
+              <input type="text" id="seeker-title" placeholder="Frontend Developer" required />
+            </div>
+            <div class="field">
+              <label for="seeker-exp">Total Experience *</label>
+              <select id="seeker-exp" required>
+                <option value="1-3">1 - 3 Years</option>
+                <option value="3-5" selected>3 - 5 Years</option>
+                <option value="5-8">5 - 8 Years</option>
+                <option value="8+">8+ Years (Lead / Staff)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="field">
+              <label for="seeker-linkedin">LinkedIn Profile URL *</label>
+              <input type="url" id="seeker-linkedin" placeholder="https://linkedin.com/in/username" required />
+            </div>
+            <div class="field">
+              <label for="seeker-portfolio">GitHub / Portfolio URL *</label>
+              <input type="url" id="seeker-portfolio" placeholder="https://github.com/username" required />
+            </div>
+          </div>
+
+          <div class="form-section-title">3. Compensation &amp; Preferences</div>
+          <div class="form-grid-2">
+            <div class="field">
+              <label for="seeker-salary">Expected Annual Salary ($ / yr) *</label>
+              <input type="number" id="seeker-salary" placeholder="135000" required />
+            </div>
+            <div class="field">
+              <label for="seeker-notice">Notice Period / Availability *</label>
+              <select id="seeker-notice" required>
+                <option value="immediate">Immediate / Available Now</option>
+                <option value="15days">15 Days</option>
+                <option value="30days" selected>30 Days</option>
+                <option value="60days">60+ Days</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-section-title">4. Key Tech Stack Skills</div>
+          <div class="skills-grid">
+            <label class="checkbox-item"><input type="checkbox" checked /> React</label>
+            <label class="checkbox-item"><input type="checkbox" checked /> TypeScript</label>
+            <label class="checkbox-item"><input type="checkbox" checked /> Node.js</label>
+            <label class="checkbox-item"><input type="checkbox" /> Python</label>
+            <label class="checkbox-item"><input type="checkbox" /> GraphQL</label>
+            <label class="checkbox-item"><input type="checkbox" checked /> AWS / Cloud</label>
+          </div>
+
+          <div class="form-section-title">5. Cover Note &amp; Resume</div>
+          <div class="field">
+            <label for="seeker-resume">Resume / CV Document URL *</label>
+            <input type="url" id="seeker-resume" placeholder="https://drive.google.com/your-resume.pdf" required />
+          </div>
+          <div class="field">
+            <label for="seeker-note">Why are you interested in this role? *</label>
+            <textarea id="seeker-note" rows="4" placeholder="Highlight relevant projects, achievements, and why you are excited about this opportunity..." required></textarea>
+          </div>
+
+          <p id="portal-status" class="status-msg" role="alert"></p>
+
+          <button type="submit" class="submit-btn">Submit Application to Hiring Manager</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Candidate Applications & Live Status Tracker -->
+    <div id="seeker-applications-section" class="role-overview-card" style="margin-top: 36px; position: static; display: none;">
+      <div class="form-head" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+        <div>
+          <h2>My Applied Jobs &amp; Live Status Tracker</h2>
+          <p>Track your submitted applications and live review decisions from hiring managers in real time.</p>
+        </div>
+        <span id="applied-count-badge" style="font-size: 12px; background: var(--color-teal-soft); color: var(--color-teal); padding: 4px 12px; border-radius: var(--radius-full); font-weight: 700;">0 Applications</span>
+      </div>
+
+      <div id="applied-jobs-list" style="display: flex; flex-direction: column; gap: 14px; margin-top: 20px;">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-brand">
+      <img src="images/logo.svg" alt="Hirebase" width="24" height="24" />
+      <span>Hirebase</span>
+    </div>
+    <p>&copy; 2026 Hirebase Inc. All rights reserved.</p>
+    <nav class="footer-links" aria-label="Footer Navigation">
+      <a href="Index.html">Home</a>
+      <a href="suggestions.html">Suggestions</a>
+      <a href="notifications.html">Notifications</a>
+      <a href="apply-job.html">Seeker Portal</a>
+      <a href="post-job.html">Post a Job</a>
+      <a href="about.html">About us</a>
+      <a href="contact.html">Contact us</a>
+    </nav>
+  </footer>
+
+  <script src="js/store.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/enhance.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      function setFieldError(fieldId, errorText) {
+        const input = document.getElementById(fieldId);
+        if (!input) return;
+        input.classList.add("invalid");
+        let errEl = input.parentNode.querySelector(".field-error-msg");
+        if (!errEl) {
+          errEl = document.createElement("div");
+          errEl.className = "field-error-msg";
+          input.parentNode.appendChild(errEl);
+        }
+        errEl.textContent = "⚠️ " + errorText;
+      }
+
+      function clearFieldError(fieldId) {
+        const input = document.getElementById(fieldId);
+        if (!input) return;
+        input.classList.remove("invalid");
+        const errEl = input.parentNode.querySelector(".field-error-msg");
+        if (errEl) errEl.remove();
+      }
+
+      const fieldIds = [
+        "seeker-name", "seeker-email", "seeker-phone", "seeker-location",
+        "seeker-title", "seeker-exp", "seeker-linkedin", "seeker-portfolio",
+        "seeker-salary", "seeker-notice", "seeker-resume", "seeker-note"
+      ];
+
+      fieldIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.addEventListener("input", () => clearFieldError(id));
+          el.addEventListener("change", () => clearFieldError(id));
+        }
+      });
+
+      const authNotice = document.getElementById("seeker-auth-notice");
+      const authNoticeMsg = document.getElementById("seeker-auth-msg");
+      const profileCard = document.getElementById("seeker-profile-card");
+      const appsSection = document.getElementById("seeker-applications-section");
+      const roleSelect = document.getElementById("role-select");
+      const quickDemoBtn = document.getElementById("btn-quick-candidate-demo");
+
+      if (quickDemoBtn) {
+        quickDemoBtn.addEventListener("click", function () {
+          const seeker = window.HirebaseStore.getUserByEmail("jordan@hirebase.com") || window.HirebaseStore.getUsers().find(u => u.role === "seeker");
+          window.HirebaseStore.setCurrentUser(seeker);
+          window.location.reload();
+        });
+      }
+
+      function checkSeekerAuth() {
+        const user = window.HirebaseStore.getCurrentUser();
+        if (!user) {
+          if (authNotice) authNotice.style.display = "block";
+          if (authNoticeMsg) authNoticeMsg.textContent = "You are currently browsing as a guest. Sign in to pre-fill your saved profile details and track live application statuses.";
+          if (profileCard) profileCard.style.display = "none";
+          if (appsSection) appsSection.style.display = "none";
+          return null;
+        }
+
+        if (user.role === "provider") {
+          if (authNotice) authNotice.style.display = "block";
+          if (authNoticeMsg) authNoticeMsg.textContent = `You are logged in as a Job Provider (${user.name}). To submit applications or track candidate applications, please switch to a Candidate account.`;
+          if (profileCard) profileCard.style.display = "none";
+          if (appsSection) appsSection.style.display = "none";
+          return null;
+        }
+
+        if (authNotice) authNotice.style.display = "none";
+        if (profileCard) profileCard.style.display = "block";
+        if (appsSection) appsSection.style.display = "block";
+
+        // Pre-fill profile info
+        const prof = user.profile || {};
+        const setVal = (id, val) => {
+          const el = document.getElementById(id);
+          if (el && val && !el.value) el.value = val;
+        };
+
+        setVal("seeker-name", user.name);
+        setVal("seeker-email", user.email);
+        setVal("seeker-phone", prof.phone);
+        setVal("seeker-location", prof.location);
+        setVal("seeker-title", prof.title);
+        setVal("seeker-exp", prof.experience);
+        setVal("seeker-linkedin", prof.linkedin);
+        setVal("seeker-portfolio", prof.github);
+        setVal("seeker-salary", prof.expectedSalary);
+        setVal("seeker-notice", prof.noticePeriod);
+        setVal("seeker-resume", prof.resumeUrl);
+        setVal("seeker-note", prof.bio);
+
+        // Pre-check skills
+        if (Array.isArray(prof.skills) && prof.skills.length) {
+          document.querySelectorAll("#portal-apply-form .skills-grid .checkbox-item").forEach(item => {
+            const skillName = item.textContent.trim();
+            const cb = item.querySelector("input[type='checkbox']");
+            if (cb && prof.skills.includes(skillName)) {
+              cb.checked = true;
+            }
+          });
+        }
+
+        // Update profile header
+        const nameEl = document.getElementById("seeker-prof-name");
+        const titleEl = document.getElementById("seeker-prof-title");
+        const avatarEl = document.getElementById("seeker-avatar-badge");
+        const appsCountEl = document.getElementById("seeker-apps-count");
+        const savedCountEl = document.getElementById("seeker-saved-count");
+
+        if (nameEl) nameEl.textContent = user.name;
+        if (titleEl) titleEl.textContent = `${prof.title || "Candidate"} · ${prof.location || "Location not set"}`;
+        if (avatarEl) {
+          avatarEl.textContent = user.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2);
+        }
+
+        const candidateApps = window.HirebaseStore.getApplicationsByCandidate(user.id);
+        const savedIds = window.HirebaseStore.getSavedJobIds(user.id);
+        if (appsCountEl) appsCountEl.textContent = candidateApps.length;
+        if (savedCountEl) savedCountEl.textContent = savedIds.size;
+
+        return user;
+      }
+
+      // Populate Role Selector & Role Overview
+      let currentActiveJob = null;
+      function setupRoleOverview() {
+        const jobs = window.HirebaseStore.getJobs().filter(j => j.status !== "Closed");
+        if (!roleSelect) return;
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const targetJobId = urlParams.get("job");
+
+        roleSelect.innerHTML = jobs.map(j => `
+          <option value="${j.id}" ${j.id === targetJobId ? "selected" : ""}>
+            ${j.title} — ${j.company} ($${j.salaryMin}k - $${j.salaryMax}k, ${j.worktype})
+          </option>
+        `).join("");
+
+        function updateRoleDisplay(jobId) {
+          currentActiveJob = jobs.find(j => j.id === jobId) || jobs[0];
+          if (!currentActiveJob) return;
+
+          const titleEl = document.getElementById("role-title");
+          const compEl = document.getElementById("role-company");
+          const salaryEl = document.getElementById("role-salary");
+          const badgesEl = document.getElementById("role-badges");
+          const sumEl = document.getElementById("role-summary");
+          const respEl = document.getElementById("role-responsibilities");
+          const reqEl = document.getElementById("role-requirements");
+
+          if (titleEl) titleEl.textContent = currentActiveJob.title;
+          if (compEl) compEl.textContent = `${currentActiveJob.company} · ${currentActiveJob.location || "Remote"}`;
+          if (salaryEl) salaryEl.textContent = `$${currentActiveJob.salaryMin}k – $${currentActiveJob.salaryMax}k`;
+
+          if (badgesEl) {
+            badgesEl.innerHTML = `
+              <span class="role-badge badge-indigo">${currentActiveJob.jobtype}</span>
+              <span class="role-badge badge-teal">${currentActiveJob.worktype}</span>
+              <span class="role-badge badge-green">${currentActiveJob.category}</span>
+              <span class="role-badge badge-amber">${currentActiveJob.experience} Level</span>
+            `;
+          }
+
+          if (sumEl) sumEl.textContent = currentActiveJob.summary || "Exciting role at " + currentActiveJob.company;
+
+          if (respEl) {
+            const resps = Array.isArray(currentActiveJob.responsibilities) && currentActiveJob.responsibilities.length
+              ? currentActiveJob.responsibilities
+              : ["Deliver high quality features aligned with engineering objectives", "Collaborate with multi-disciplinary team members", "Maintain testing and documentation standards"];
+            respEl.innerHTML = resps.map(r => `<li>${r}</li>`).join("");
+          }
+
+          if (reqEl) {
+            const reqs = Array.isArray(currentActiveJob.qualifications) && currentActiveJob.qualifications.length
+              ? currentActiveJob.qualifications
+              : ["Demonstrated domain experience", "Proficiency in required tech stack", "Strong analytical and communication abilities"];
+            reqEl.innerHTML = reqs.map(q => `<li>${q}</li>`).join("");
+          }
+
+          // Check if candidate already applied
+          const user = window.HirebaseStore.getCurrentUser();
+          const status = document.getElementById("portal-status");
+          if (user && status) {
+            const hasApp = window.HirebaseStore.hasApplied(user.id, currentActiveJob.id);
+            if (hasApp) {
+              const app = window.HirebaseStore.getApplicationsByCandidate(user.id).find(a => a.jobId === currentActiveJob.id);
+              status.textContent = `ℹ️ You have already applied for this role. Current Status: [${app ? app.status : "Applied"}]`;
+              status.className = "status-msg";
+              status.style.color = "var(--color-accent)";
+            } else {
+              status.textContent = "";
+            }
+          }
+        }
+
+        const initialId = targetJobId || (jobs.length > 0 ? jobs[0].id : null);
+        if (initialId) updateRoleDisplay(initialId);
+
+        roleSelect.addEventListener("change", function () {
+          updateRoleDisplay(this.value);
+        });
+      }
+
+      // Render Candidate's Applied Jobs & Status Tracker
+      function renderAppliedJobs(user) {
+        if (!user || !appsSection) return;
+        const candidateApps = window.HirebaseStore.getApplicationsByCandidate(user.id);
+        const countBadge = document.getElementById("applied-count-badge");
+        const listContainer = document.getElementById("applied-jobs-list");
+
+        if (countBadge) countBadge.textContent = `${candidateApps.length} Application${candidateApps.length === 1 ? "" : "s"}`;
+        if (!listContainer) return;
+
+        if (candidateApps.length === 0) {
+          listContainer.innerHTML = `
+            <div style="text-align: center; padding: 24px 16px; background: var(--color-bg); border-radius: var(--radius-sm); border: 1px dashed var(--color-border);">
+              <p style="font-size: 14px; color: var(--color-text-muted);">You have not submitted any applications yet. Select an open role above to apply!</p>
+            </div>
+          `;
+          return;
+        }
+
+        function getStatusBadgeClass(status) {
+          if (status === "Accepted") return "badge-green";
+          if (status === "Shortlisted" || status === "Interview Scheduled") return "badge-teal";
+          if (status === "Under Review") return "badge-indigo";
+          if (status === "Rejected") return "badge-amber";
+          return "badge-indigo";
+        }
+
+        listContainer.innerHTML = candidateApps.map(app => `
+          <div style="background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 18px;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px;">
+              <div>
+                <h3 style="font-size: 16px; font-weight: 700; margin: 0; color: var(--color-text);">${app.jobTitle}</h3>
+                <p style="font-size: 13px; color: var(--color-text-muted); margin-top: 3px;">
+                  ${app.company} &middot; Applied on ${new Date(app.appliedAt).toLocaleDateString()}
+                </p>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="role-badge ${getStatusBadgeClass(app.status)}" style="font-size: 12px; padding: 4px 12px;">
+                  ● ${app.status}
+                </span>
+              </div>
+            </div>
+
+            <div style="margin-top: 10px; font-size: 12px; color: var(--color-text-muted); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+              <div>
+                <strong>Application ID:</strong> ${app.id}
+              </div>
+              <div>
+                <strong>Expected Salary:</strong> $${app.expectedSalary || "N/A"} &middot; <strong>Notice:</strong> ${app.noticePeriod || "30 days"}
+              </div>
+            </div>
+          </div>
+        `).join("");
+      }
+
+      const activeUser = checkSeekerAuth();
+      setupRoleOverview();
+      if (activeUser) renderAppliedJobs(activeUser);
+
+      // Handle Application Form Submission
+      const form = document.getElementById("portal-apply-form");
+      if (form) {
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          const user = checkSeekerAuth();
+          if (!user) {
+            alert("Please sign in with a Job Seeker account before applying.");
+            return;
+          }
+
+          if (!currentActiveJob) {
+            alert("Please select a role to apply for.");
+            return;
+          }
+
+          const status = document.getElementById("portal-status");
+          if (window.HirebaseStore.hasApplied(user.id, currentActiveJob.id)) {
+            if (status) {
+              status.textContent = "⚠️ You have already submitted an application for this position.";
+              status.className = "status-msg error";
+            }
+            return;
+          }
+
+          let isValid = true;
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+          const nameVal = document.getElementById("seeker-name").value.trim();
+          const emailVal = document.getElementById("seeker-email").value.trim();
+          const phoneVal = document.getElementById("seeker-phone").value.trim();
+          const locationVal = document.getElementById("seeker-location").value.trim();
+          const titleVal = document.getElementById("seeker-title").value.trim();
+          const expVal = document.getElementById("seeker-exp").value;
+          const linkedinVal = document.getElementById("seeker-linkedin").value.trim();
+          const portfolioVal = document.getElementById("seeker-portfolio").value.trim();
+          const salaryVal = document.getElementById("seeker-salary").value.trim();
+          const noticeVal = document.getElementById("seeker-notice").value;
+          const resumeVal = document.getElementById("seeker-resume").value.trim();
+          const noteVal = document.getElementById("seeker-note").value.trim();
+
+          const skillsChecked = [];
+          document.querySelectorAll("#portal-apply-form .skills-grid input[type='checkbox']:checked").forEach(cb => {
+            skillsChecked.push(cb.parentNode.textContent.trim());
+          });
+
+          if (!nameVal) { setFieldError("seeker-name", "Full name is required."); isValid = false; }
+          if (!emailVal || !emailRegex.test(emailVal)) { setFieldError("seeker-email", "Valid email address is required."); isValid = false; }
+          if (!phoneVal) { setFieldError("seeker-phone", "Phone number is required."); isValid = false; }
+          if (!locationVal) { setFieldError("seeker-location", "Current location is required."); isValid = false; }
+          if (!titleVal) { setFieldError("seeker-title", "Current role title is required."); isValid = false; }
+          if (!linkedinVal) { setFieldError("seeker-linkedin", "LinkedIn URL is required."); isValid = false; }
+          if (!portfolioVal) { setFieldError("seeker-portfolio", "Portfolio URL is required."); isValid = false; }
+          if (!salaryVal) { setFieldError("seeker-salary", "Expected salary is required."); isValid = false; }
+          if (!resumeVal) { setFieldError("seeker-resume", "Resume document URL is required."); isValid = false; }
+          if (!noteVal) { setFieldError("seeker-note", "Interest note is required."); isValid = false; }
+
+          if (!isValid) {
+            if (status) {
+              status.textContent = "Please fill in all required fields highlighted in red above.";
+              status.className = "status-msg error";
+            }
+            return;
+          }
+
+          const res = window.HirebaseStore.applyForJob(currentActiveJob.id, user, {
+            name: nameVal,
+            email: emailVal,
+            phone: phoneVal,
+            location: locationVal,
+            title: titleVal,
+            experience: expVal,
+            linkedin: linkedinVal,
+            portfolio: portfolioVal,
+            expectedSalary: salaryVal,
+            noticePeriod: noticeVal,
+            skills: skillsChecked,
+            resumeUrl: resumeVal,
+            coverNote: noteVal
+          });
+
+          if (!res.success) {
+            if (status) {
+              status.textContent = "⚠️ " + res.error;
+              status.className = "status-msg error";
+            }
+            return;
+          }
+
+          if (status) {
+            status.textContent = `✓ Application for "${currentActiveJob.title}" successfully submitted to the hiring manager!`;
+            status.className = "status-msg success";
+          }
+
+          checkSeekerAuth();
+          renderAppliedJobs(user);
+          if (window.HBConfetti) window.HBConfetti.fire();
+          if (window.HBNotifs) window.HBNotifs.refresh();
+
+          if (appsSection) {
+            appsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

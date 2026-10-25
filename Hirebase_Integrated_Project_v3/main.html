@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>::before Assignment</title>
+
+    <link rel="stylesheet" href="style.css">
+    <style>
+ 
+
+.container {
+    width: 300px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background: white;
+}
+
+label {
+    font-size: 18px;
+}
+
+.required::before {
+    content: "* ";
+    color: red;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+}
+
+input[type="submit"] {
+    padding: 8px 15px;
+    font-size: 16px;
+    cursor: pointer;
+}
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <form>
+        <label class="required">Username</label><br>
+        <input type="text" required><br><br>
+
+        <label class="required">Email Address</label><br>
+        <input type="email" required><br><br>
+
+        <label>Hobby</label><br>
+        <input type="text"><br><br>
+
+        <input type="submit" value="SUBMIT">
+    </form>
+</div>
+
+</body>
+</html>

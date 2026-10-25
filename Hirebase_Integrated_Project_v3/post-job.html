@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Post a Job - Hirebase Employer Portal</title>
+  <meta name="description" content="Post tech, design, marketing, and engineering job listings to reach qualified candidates on Hirebase." />
+  <link rel="icon" type="image/svg+xml" href="images/logo.svg" />
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("hb_theme");
+        if (t === "dark") document.documentElement.setAttribute("data-theme", "dark");
+        var loggedIn = localStorage.getItem("hb_logged_in") === "true";
+        document.documentElement.setAttribute("data-user-logged-in", loggedIn ? "true" : "false");
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="css/theme.css" />
+  <link rel="stylesheet" href="css/enhance.css" />
+  <link rel="stylesheet" href="css/Index.css" />
+  <style>
+    .post-main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 48px 24px;
+    }
+
+    .post-hero {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .post-hero h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+
+    .post-hero p {
+      color: var(--color-text-muted);
+      font-size: 17px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .post-card {
+      background: var(--color-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--color-accent);
+      margin: 24px 0 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .section-title:first-of-type {
+      margin-top: 0;
+    }
+
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .field {
+      margin-bottom: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-text);
+    }
+
+    .field input, .field select, .field textarea {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      font-size: 14px;
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      outline: none;
+      transition: all var(--transition-fast);
+    }
+
+    .field input:focus, .field select:focus, .field textarea:focus {
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 3px var(--color-accent-soft);
+      background-color: var(--color-bg-alt);
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      background: var(--color-bg);
+      padding: 14px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      margin-bottom: 18px;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .checkbox-item input {
+      accent-color: var(--color-accent);
+      width: 16px;
+      height: 16px;
+    }
+
+    .post-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--color-accent) 0%, #4F46E5 100%);
+      color: #FFFFFF;
+      border: none;
+      padding: 16px;
+      border-radius: var(--radius-sm);
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(99, 102, 241, 0.35);
+      transition: all var(--transition-normal);
+      margin-top: 24px;
+    }
+
+    .post-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 22px rgba(99, 102, 241, 0.45);
+    }
+
+    .status-msg {
+      margin-top: 14px;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .status-msg.success {
+      color: var(--color-success);
+    }
+
+    @media (max-width: 640px) {
+      .form-grid-2 { grid-template-columns: 1fr; }
+      .skills-grid { grid-template-columns: repeat(2, 1fr); }
+      .post-card { padding: 24px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Header (Touch-Scrollable Navbar) -->
+  <header class="header-bar">
+    <nav class="navbar">
+      <a href="Index.html" class="brand">
+        <img src="images/logo.svg" alt="Hirebase logo" class="brand-logo" />
+        <span>Hirebase</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="Index.html">Home</a></li>
+        <li><a href="suggestions.html">Suggestions</a></li>
+        <li><a href="notifications.html">Notifications <span class="nav-notif-badge" style="background: var(--color-accent); color: #fff; border-radius: 10px; padding: 1px 6px; font-size: 11px;">3</span></a></li>
+        <li><a href="apply-job.html">Seeker Portal</a></li>
+        <li><a href="post-job.html" class="active-link">Post a Job</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+
+      <div class="nav-controls">
+        <ul class="auth-links">
+          <li class="auth-guest"><a href="signin.html">Sign in</a></li>
+          <li class="auth-guest"><a href="signup.html" class="btn-signup">Sign up</a></li>
+          <li class="auth-user"><a href="apply-job.html" class="profile-link"><span class="profile-avatar">JL</span><span>Jordan Lee</span><span class="online-dot"></span></a></li>
+          <li class="auth-user"><a href="Index.html?logout=success" class="logout-link">Logout</a></li>
+        </ul>
+        <button id="theme-toggle" class="theme-toggle-btn" type="button" aria-label="Toggle dark mode">☾</button>
+      </div>
+    </nav>
+  </header>
+
+  <main class="post-main">
+    <section class="post-hero">
+      <h1>Post a Job &amp; Find Top Talent</h1>
+      <p>Connect your open roles with over 12,000 active candidates across engineering, design, product, and growth.</p>
+    </section>
+
+    <!-- Provider Notice when not authenticated as recruiter -->
+    <div id="provider-auth-notice" class="post-card" style="margin-bottom: 28px; display: none; border-left: 4px solid var(--color-warning);">
+      <h3 style="font-size: 16px; margin-bottom: 6px;">Recruiter Authentication Required</h3>
+      <p style="color: var(--color-text-muted); font-size: 14px; margin-bottom: 14px;" id="auth-notice-message">
+        You are currently viewing as a guest or candidate. To publish job listings and review applicants, please log in with a Job Provider account.
+      </p>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <a href="signin.html" class="post-btn" style="display: inline-block; width: auto; padding: 10px 20px; font-size: 14px; margin: 0; text-decoration: none;">Sign in as Recruiter</a>
+        <button type="button" id="btn-quick-recruiter-demo" class="post-btn" style="width: auto; padding: 10px 20px; font-size: 14px; margin: 0; background: var(--color-bg); color: var(--color-text); border: 1px solid var(--color-border); box-shadow: none;">Login Demo Recruiter (Sarah Vance)</button>
+      </div>
+    </div>
+
+    <!-- Active Recruiter Profile Card -->
+    <div id="provider-profile-card" class="post-card" style="margin-bottom: 28px; padding: 24px 32px; display: none;">
+      <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--color-border);">
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <h2 id="prof-company-name" style="font-size: 22px; font-weight: 800;">Cursive Labs</h2>
+            <span id="prof-verified-badge" class="role-badge badge-green" style="font-size: 11px; padding: 2px 8px; border-radius: var(--radius-full); font-weight: 700;">✓ Verified Employer</span>
+          </div>
+          <p id="prof-recruiter-info" style="color: var(--color-text-muted); font-size: 14px; margin-top: 4px;">Recruiter: Sarah Vance &middot; sarah@cursive.com</p>
+        </div>
+        <div style="display: flex; gap: 16px;">
+          <div style="text-align: center; background: var(--color-bg); padding: 10px 18px; border-radius: var(--radius-md); border: 1px solid var(--color-border);">
+            <div id="stat-posted-count" style="font-size: 20px; font-weight: 800; color: var(--color-accent);">0</div>
+            <div style="font-size: 12px; color: var(--color-text-muted); font-weight: 600;">Active Jobs</div>
+          </div>
+          <div style="text-align: center; background: var(--color-bg); padding: 10px 18px; border-radius: var(--radius-md); border: 1px solid var(--color-border);">
+            <div id="stat-applicant-count" style="font-size: 20px; font-weight: 800; color: var(--color-teal);">0</div>
+            <div style="font-size: 12px; color: var(--color-text-muted); font-weight: 600;">Total Applicants</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top: 12px; font-size: 13px; color: var(--color-text-muted);">
+        <span>Company Website: <a id="prof-website-link" href="#" target="_blank" style="color: var(--color-accent); font-weight: 600;">cursive.com</a></span>
+      </div>
+    </div>
+
+    <div class="post-card">
+      <form id="post-job-form">
+        
+        <div class="section-title">1. Job Details</div>
+        <div class="field">
+          <label for="post-title">Job Title *</label>
+          <input type="text" id="post-title" placeholder="e.g. Senior Frontend Engineer" required />
+        </div>
+
+        <div class="form-grid-2">
+          <div class="field">
+            <label for="post-dept">Department / Category *</label>
+            <select id="post-dept" required>
+              <option value="Engineering" selected>Engineering</option>
+              <option value="Design">Design &amp; UX</option>
+              <option value="Marketing">Marketing &amp; Growth</option>
+              <option value="Support">Customer Support</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="post-type">Employment Type *</label>
+            <select id="post-type" required>
+              <option value="Full-time" selected>Full-time</option>
+              <option value="Contract">Contract</option>
+              <option value="Internship">Internship</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="field">
+            <label for="post-location-type">Work Location Type *</label>
+            <select id="post-location-type" required>
+              <option value="Remote" selected>Remote</option>
+              <option value="Hybrid">Hybrid</option>
+              <option value="On-site">On-site</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="post-location">City / Country</label>
+            <input type="text" id="post-location" placeholder="e.g. Remote, India / Bengaluru, IN" required />
+          </div>
+        </div>
+
+        <div class="section-title">2. Compensation &amp; Experience</div>
+        <div class="form-grid-2">
+          <div class="field">
+            <label for="post-salary-min">Min Annual Salary ($k)</label>
+            <input type="number" id="post-salary-min" placeholder="90" required />
+          </div>
+          <div class="field">
+            <label for="post-salary-max">Max Annual Salary ($k)</label>
+            <input type="number" id="post-salary-max" placeholder="130" required />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="post-exp">Required Experience Level</label>
+          <select id="post-exp">
+            <option value="junior">Junior (1-3 yrs)</option>
+            <option value="mid" selected>Mid-level (3-5 yrs)</option>
+            <option value="senior">Senior (5-8 yrs)</option>
+            <option value="lead">Lead / Staff (8+ yrs)</option>
+          </select>
+        </div>
+
+        <div class="section-title">3. Required Tech Stack Skills</div>
+        <div class="skills-grid">
+          <label class="checkbox-item"><input type="checkbox" checked /> React</label>
+          <label class="checkbox-item"><input type="checkbox" checked /> TypeScript</label>
+          <label class="checkbox-item"><input type="checkbox" /> Node.js</label>
+          <label class="checkbox-item"><input type="checkbox" /> Python</label>
+          <label class="checkbox-item"><input type="checkbox" /> Figma</label>
+          <label class="checkbox-item"><input type="checkbox" /> AWS / Cloud</label>
+          <label class="checkbox-item"><input type="checkbox" /> Docker</label>
+          <label class="checkbox-item"><input type="checkbox" /> GraphQL</label>
+        </div>
+
+        <div class="section-title">4. Job Description &amp; Responsibilities</div>
+        <div class="field">
+          <label for="post-desc">Role Overview &amp; Key Responsibilities *</label>
+          <textarea id="post-desc" rows="5" placeholder="Detail the role objectives, team context, key responsibilities, and qualifications..." required></textarea>
+        </div>
+
+        <div class="section-title">5. Company Profile</div>
+        <div class="form-grid-2">
+          <div class="field">
+            <label for="post-company">Company Name *</label>
+            <input type="text" id="post-company" placeholder="e.g. Cursive Labs" required />
+          </div>
+          <div class="field">
+            <label for="post-website">Company Website URL</label>
+            <input type="url" id="post-website" placeholder="https://company.com" />
+          </div>
+        </div>
+
+        <p id="post-status" class="status-msg" role="alert"></p>
+
+        <button type="submit" class="post-btn">Publish Job Listing</button>
+      </form>
+    </div>
+
+    <!-- Posted Jobs & Applicant Tracking Dashboard -->
+    <div id="posted-jobs-section" class="post-card" style="margin-top: 36px; display: none;">
+      <div class="section-title" style="margin-top: 0; font-size: 16px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+        <span>Posted Jobs &amp; Candidate Applications</span>
+        <span id="posted-jobs-count-badge" style="font-size: 12px; background: var(--color-accent-soft); color: var(--color-accent); padding: 3px 10px; border-radius: var(--radius-full); font-weight: 700;">0 Roles</span>
+      </div>
+      <p style="color: var(--color-text-muted); font-size: 14px; margin-bottom: 20px;">
+        Review submissions, manage listing status, and update candidate application statuses in real time.
+      </p>
+
+      <div id="posted-jobs-list" style="display: flex; flex-direction: column; gap: 20px;">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-brand">
+      <img src="images/logo.svg" alt="Hirebase" width="24" height="24" />
+      <span>Hirebase</span>
+    </div>
+    <p>&copy; 2026 Hirebase Inc. All rights reserved.</p>
+    <nav class="footer-links" aria-label="Footer Navigation">
+      <a href="Index.html">Home</a>
+      <a href="suggestions.html">Suggestions</a>
+      <a href="notifications.html">Notifications</a>
+      <a href="apply-job.html">Seeker Portal</a>
+      <a href="post-job.html">Post a Job</a>
+      <a href="about.html">About us</a>
+      <a href="contact.html">Contact us</a>
+    </nav>
+  </footer>
+
+  <script src="js/store.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/enhance.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      function setFieldError(fieldId, errorText) {
+        const input = document.getElementById(fieldId);
+        if (!input) return;
+        input.classList.add("invalid");
+        let errEl = input.parentNode.querySelector(".field-error-msg");
+        if (!errEl) {
+          errEl = document.createElement("div");
+          errEl.className = "field-error-msg";
+          input.parentNode.appendChild(errEl);
+        }
+        errEl.textContent = "⚠️ " + errorText;
+      }
+
+      function clearFieldError(fieldId) {
+        const input = document.getElementById(fieldId);
+        if (!input) return;
+        input.classList.remove("invalid");
+        const errEl = input.parentNode.querySelector(".field-error-msg");
+        if (errEl) errEl.remove();
+      }
+
+      ["post-title", "post-desc", "post-company", "post-location", "post-salary-min", "post-salary-max"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.addEventListener("input", () => clearFieldError(id));
+          el.addEventListener("change", () => clearFieldError(id));
+        }
+      });
+
+      const authNotice = document.getElementById("provider-auth-notice");
+      const authNoticeMsg = document.getElementById("auth-notice-message");
+      const profileCard = document.getElementById("provider-profile-card");
+      const postedJobsSection = document.getElementById("posted-jobs-section");
+      const quickDemoBtn = document.getElementById("btn-quick-recruiter-demo");
+
+      if (quickDemoBtn) {
+        quickDemoBtn.addEventListener("click", function () {
+          const provider = window.HirebaseStore.getUserByEmail("sarah@cursive.com") || window.HirebaseStore.getUsers().find(u => u.role === "provider");
+          window.HirebaseStore.setCurrentUser(provider);
+          window.location.reload();
+        });
+      }
+
+      function checkProviderAuth() {
+        const user = window.HirebaseStore.getCurrentUser();
+        if (!user) {
+          if (authNotice) authNotice.style.display = "block";
+          if (authNoticeMsg) authNoticeMsg.textContent = "You are currently viewing as a guest. To publish job listings and review applicants, please log in with a Job Provider account.";
+          if (profileCard) profileCard.style.display = "none";
+          if (postedJobsSection) postedJobsSection.style.display = "none";
+          return null;
+        }
+
+        if (user.role !== "provider") {
+          if (authNotice) authNotice.style.display = "block";
+          if (authNoticeMsg) authNoticeMsg.textContent = `You are currently logged in as a Job Seeker (${user.name}). Job posting and applicant tracking are reserved for Job Providers / Recruiters.`;
+          if (profileCard) profileCard.style.display = "none";
+          if (postedJobsSection) postedJobsSection.style.display = "none";
+          return null;
+        }
+
+        if (authNotice) authNotice.style.display = "none";
+        if (profileCard) profileCard.style.display = "block";
+        if (postedJobsSection) postedJobsSection.style.display = "block";
+
+        // Pre-fill company info
+        const compEl = document.getElementById("post-company");
+        const webEl = document.getElementById("post-website");
+        if (compEl && !compEl.value) compEl.value = user.company || "";
+        if (webEl && !webEl.value) webEl.value = user.website || "";
+
+        // Update profile header
+        const compName = document.getElementById("prof-company-name");
+        const recInfo = document.getElementById("prof-recruiter-info");
+        const verBadge = document.getElementById("prof-verified-badge");
+        const webLink = document.getElementById("prof-website-link");
+
+        if (compName) compName.textContent = user.company || user.name + " Ventures";
+        if (recInfo) recInfo.textContent = `Recruiter: ${user.name} · ${user.email}`;
+        if (verBadge) {
+          verBadge.textContent = user.isVerified ? "✓ Verified Employer" : "Pending Verification";
+          verBadge.className = user.isVerified ? "role-badge badge-green" : "role-badge badge-amber";
+        }
+        if (webLink) {
+          webLink.href = user.website || "#";
+          webLink.textContent = user.website ? user.website.replace(/^https?:\/\//, "") : "Not specified";
+        }
+
+        return user;
+      }
+
+      function renderPostedJobsDashboard(user) {
+        if (!user || !postedJobsSection) return;
+        const postedJobs = window.HirebaseStore.getJobsByProvider(user.id);
+        const allProviderApps = window.HirebaseStore.getApplicationsForProvider(user);
+
+        const countBadge = document.getElementById("posted-jobs-count-badge");
+        const statPosted = document.getElementById("stat-posted-count");
+        const statApps = document.getElementById("stat-applicant-count");
+        const listContainer = document.getElementById("posted-jobs-list");
+
+        if (countBadge) countBadge.textContent = `${postedJobs.length} Role${postedJobs.length === 1 ? "" : "s"}`;
+        if (statPosted) statPosted.textContent = postedJobs.filter(j => j.status !== "Closed").length;
+        if (statApps) statApps.textContent = allProviderApps.length;
+
+        if (!listContainer) return;
+
+        if (postedJobs.length === 0) {
+          listContainer.innerHTML = `
+            <div style="text-align: center; padding: 32px 16px; background: var(--color-bg); border-radius: var(--radius-md); border: 1px dashed var(--color-border);">
+              <p style="font-size: 15px; color: var(--color-text-muted);">No job listings posted yet. Use the form above to publish your first role!</p>
+            </div>
+          `;
+          return;
+        }
+
+        listContainer.innerHTML = postedJobs.map(job => {
+          const jobApps = allProviderApps.filter(a => a.jobId === job.id);
+          const isOpen = job.status !== "Closed";
+
+          const applicantsHtml = jobApps.length === 0
+            ? `<p style="font-size: 13px; color: var(--color-text-muted); padding: 12px; background: var(--color-card); border-radius: var(--radius-sm);">No candidate applications submitted for this role yet.</p>`
+            : jobApps.map(app => `
+                <div style="background: var(--color-card); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 16px; margin-top: 10px;">
+                  <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px;">
+                    <div>
+                      <div style="font-size: 15px; font-weight: 700; color: var(--color-text);">${app.candidateName}</div>
+                      <div style="font-size: 13px; color: var(--color-text-muted);">
+                        ${app.candidateEmail} ${app.candidatePhone ? "&middot; " + app.candidatePhone : ""} ${app.candidateLocation ? "&middot; " + app.candidateLocation : ""}
+                      </div>
+                      ${app.candidateTitle ? `<div style="font-size: 12px; font-weight: 600; color: var(--color-accent); margin-top: 2px;">${app.candidateTitle} (${app.experience} yrs exp)</div>` : ""}
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <label style="font-size: 12px; font-weight: 600; color: var(--color-text-muted);">Status:</label>
+                      <select class="status-updater" data-app-id="${app.id}" style="padding: 4px 10px; font-size: 12px; font-weight: 700; border-radius: var(--radius-sm); background: var(--color-bg); color: var(--color-text); border: 1px solid var(--color-border);">
+                        <option value="Applied" ${app.status === "Applied" ? "selected" : ""}>Applied</option>
+                        <option value="Under Review" ${app.status === "Under Review" ? "selected" : ""}>Under Review</option>
+                        <option value="Shortlisted" ${app.status === "Shortlisted" ? "selected" : ""}>Shortlisted</option>
+                        <option value="Interview Scheduled" ${app.status === "Interview Scheduled" ? "selected" : ""}>Interview Scheduled</option>
+                        <option value="Rejected" ${app.status === "Rejected" ? "selected" : ""}>Rejected</option>
+                        <option value="Accepted" ${app.status === "Accepted" ? "selected" : ""}>Accepted</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  ${app.coverNote ? `
+                    <div style="font-size: 13px; color: var(--color-text); background: var(--color-bg); padding: 10px; border-radius: var(--radius-sm); margin: 10px 0; line-height: 1.4;">
+                      <strong>Candidate Pitch:</strong> "${app.coverNote}"
+                    </div>
+                  ` : ""}
+
+                  <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 12px; color: var(--color-text-muted); margin-top: 8px;">
+                    <div>Applied on: ${new Date(app.appliedAt).toLocaleDateString()}</div>
+                    ${app.resumeUrl ? `<a href="${app.resumeUrl}" target="_blank" rel="noopener noreferrer" style="color: var(--color-accent); font-weight: 700; text-decoration: underline;">📄 View Resume / Portfolio</a>` : ""}
+                  </div>
+                </div>
+              `).join("");
+
+          return `
+            <div style="background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 20px;">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--color-border);">
+                <div>
+                  <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <h3 style="font-size: 18px; font-weight: 700; margin: 0;">${job.title}</h3>
+                    <span class="role-badge ${isOpen ? "badge-green" : "badge-amber"}" style="font-size: 11px; padding: 2px 8px;">
+                      ${isOpen ? "● Open &amp; Active" : "○ Closed"}
+                    </span>
+                    <span class="role-badge badge-indigo" style="font-size: 11px; padding: 2px 8px;">${job.category}</span>
+                  </div>
+                  <p style="font-size: 13px; color: var(--color-text-muted); margin-top: 4px;">
+                    ${job.worktype} &middot; ${job.jobtype} &middot; $${job.salaryMin}k - $${job.salaryMax}k &middot; ${job.location}
+                  </p>
+                </div>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                  <button type="button" class="btn-toggle-status post-btn" data-job-id="${job.id}" data-current-status="${job.status}" style="width: auto; padding: 6px 14px; font-size: 12px; margin: 0; background: var(--color-bg-alt); color: var(--color-text); border: 1px solid var(--color-border); box-shadow: none;">
+                    ${isOpen ? "Close Listing" : "Re-open Listing"}
+                  </button>
+                  <button type="button" class="btn-toggle-drawer post-btn" data-job-id="${job.id}" style="width: auto; padding: 6px 14px; font-size: 12px; margin: 0;">
+                    👥 View Applicants (${jobApps.length})
+                  </button>
+                </div>
+              </div>
+
+              <!-- Applicant Drawer (Hidden by default) -->
+              <div id="drawer-${job.id}" style="display: none; margin-top: 16px;">
+                <h4 style="font-size: 13px; font-weight: 800; text-transform: uppercase; color: var(--color-accent); margin-bottom: 8px; letter-spacing: 0.5px;">
+                  Candidate Applications (${jobApps.length})
+                </h4>
+                ${applicantsHtml}
+              </div>
+            </div>
+          `;
+        }).join("");
+
+        // Attach event listeners for status updates and drawers
+        listContainer.querySelectorAll(".btn-toggle-drawer").forEach(btn => {
+          btn.addEventListener("click", function () {
+            const jId = this.dataset.jobId;
+            const drawer = document.getElementById("drawer-" + jId);
+            if (drawer) {
+              const isShown = drawer.style.display === "block";
+              drawer.style.display = isShown ? "none" : "block";
+              this.textContent = isShown ? `👥 View Applicants (${drawer.querySelectorAll(".status-updater").length})` : `▲ Hide Applicants`;
+            }
+          });
+        });
+
+        listContainer.querySelectorAll(".btn-toggle-status").forEach(btn => {
+          btn.addEventListener("click", function () {
+            const jId = this.dataset.jobId;
+            const curStatus = this.dataset.currentStatus;
+            const nextStatus = curStatus === "Closed" ? "Open" : "Closed";
+            window.HirebaseStore.updateJobStatus(jId, nextStatus, user);
+            renderPostedJobsDashboard(user);
+          });
+        });
+
+        listContainer.querySelectorAll(".status-updater").forEach(sel => {
+          sel.addEventListener("change", function () {
+            const appId = this.dataset.appId;
+            const newStatus = this.value;
+            const res = window.HirebaseStore.updateApplicationStatus(appId, newStatus, user);
+            if (res.success) {
+              alert(`✓ Candidate application status updated to "${newStatus}"! This is now synced with the Seeker Portal.`);
+            } else {
+              alert("⚠️ " + res.error);
+            }
+          });
+        });
+      }
+
+      const activeUser = checkProviderAuth();
+      if (activeUser) renderPostedJobsDashboard(activeUser);
+
+      // Handle Job Post Form Submission
+      const postForm = document.getElementById("post-job-form");
+      if (postForm) {
+        postForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const currentUser = checkProviderAuth();
+          if (!currentUser) {
+            alert("Please sign in with a Job Provider account to publish a job listing.");
+            return;
+          }
+
+          let isValid = true;
+          const title = document.getElementById("post-title").value.trim();
+          const dept = document.getElementById("post-dept").value;
+          const type = document.getElementById("post-type").value;
+          const locationType = document.getElementById("post-location-type").value;
+          const location = document.getElementById("post-location").value.trim();
+          const salaryMin = document.getElementById("post-salary-min").value.trim();
+          const salaryMax = document.getElementById("post-salary-max").value.trim();
+          const exp = document.getElementById("post-exp").value;
+          const desc = document.getElementById("post-desc").value.trim();
+          const company = document.getElementById("post-company").value.trim();
+          const website = document.getElementById("post-website").value.trim();
+          const status = document.getElementById("post-status");
+
+          // Collect selected skills
+          const skillsGrid = document.querySelector(".skills-grid");
+          const selectedSkills = [];
+          if (skillsGrid) {
+            skillsGrid.querySelectorAll("input[type='checkbox']:checked").forEach(cb => {
+              selectedSkills.push(cb.parentNode.textContent.trim());
+            });
+          }
+
+          if (!title) { setFieldError("post-title", "Job title is required."); isValid = false; }
+          if (!desc || desc.length < 20) { setFieldError("post-desc", "Please enter a detailed job description (minimum 20 characters)."); isValid = false; }
+          if (!company) { setFieldError("post-company", "Company name is required."); isValid = false; }
+          if (!location) { setFieldError("post-location", "City / Country location is required."); isValid = false; }
+
+          if (!isValid) {
+            if (status) {
+              status.textContent = "Please complete all required fields highlighted in red above.";
+              status.className = "status-msg error";
+            }
+            return;
+          }
+
+          const result = window.HirebaseStore.createJob({
+            title: title,
+            category: dept,
+            jobtype: type,
+            worktype: locationType,
+            location: location,
+            salaryMin: salaryMin ? Number(salaryMin) : 60,
+            salaryMax: salaryMax ? Number(salaryMax) : 100,
+            experience: exp,
+            skills: selectedSkills,
+            description: desc,
+            company: company,
+            website: website
+          }, currentUser);
+
+          if (!result.success) {
+            if (status) {
+              status.textContent = "⚠️ " + result.error;
+              status.className = "status-msg error";
+            }
+            return;
+          }
+
+          if (status) {
+            status.textContent = `✓ "${result.job.title}" has been successfully published! It is now live on the public job board.`;
+            status.className = "status-msg success";
+          }
+
+          // Reset inputs except company and website
+          document.getElementById("post-title").value = "";
+          document.getElementById("post-desc").value = "";
+          document.getElementById("post-location").value = "";
+
+          // Refresh dashboard
+          renderPostedJobsDashboard(currentUser);
+
+          // Scroll to dashboard
+          if (postedJobsSection) {
+            postedJobsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

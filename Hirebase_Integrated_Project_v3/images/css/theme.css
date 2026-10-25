@@ -1,0 +1,239 @@
+/* ============================================================
+   Shared theme layer — included on every page AFTER the page's
+   own stylesheet. Provides the light/dark toggle and the small
+   set of components (theme button, toasts, modals) that are
+   reused across pages.
+   ============================================================ */
+
+/* ---------- Default Light Theme Variables ---------- */
+:root {
+  --color-primary: #0E3B36;
+  --color-primary-hover: #16524B;
+  --color-primary-text: #0E3B36;
+  --color-accent: #E06A44;
+  --color-accent-hover: #C85632;
+  --color-bg: #FAF8F3;
+  --color-bg-alt: #FFFFFF;
+  --color-border: #E5E0D3;
+  --color-text: #1A2E2A;
+  --color-text-muted: #5B6C67;
+  --color-danger: #B23A2E;
+  
+  --color-nav-bg: #0E3B36;
+  --color-nav-text: #FFFFFF;
+  --color-footer-bg: #0E3B36;
+  --color-footer-text: #FFFFFF;
+  
+  --tag-fulltime-bg: #E1EDE9;
+  --tag-fulltime-text: #0E3B36;
+  --tag-fulltime-border: transparent;
+  
+  --tag-internship-bg: #FAECE7;
+  --tag-internship-text: #993C1D;
+  --tag-internship-border: transparent;
+  
+  --tag-contract-bg: #EFE6D8;
+  --tag-contract-text: #7A5A20;
+  --tag-contract-border: transparent;
+  
+  --logout-banner-bg: #E1EDE9;
+  --logout-banner-text: #0E3B36;
+  --logout-banner-border: #C8DCD5;
+
+  --card-shadow: 0 4px 12px rgba(14, 59, 54, 0.05);
+  --card-shadow-hover: 0 8px 24px rgba(14, 59, 54, 0.12);
+  --input-bg: #FFFFFF;
+  --modal-overlay-bg: rgba(15, 25, 22, 0.55);
+}
+
+/* ---------- Dark Mode Variable Overrides ---------- */
+/* Same specificity as :root, but loaded later in the cascade,
+   so this wins whenever <html data-theme="dark"> is set. */
+[data-theme="dark"] {
+  --color-primary: #0D9488;
+  --color-primary-hover: #14B8A6;
+  --color-primary-text: #2DD4BF;
+  --color-accent: #FF7A59;
+  --color-accent-hover: #FF9378;
+  --color-bg: #090D16;
+  --color-bg-alt: #131C2E;
+  --color-border: #233148;
+  --color-text: #F8FAFC;
+  --color-text-muted: #94A3B8;
+  --color-danger: #F87171;
+  
+  --color-nav-bg: #0D1424;
+  --color-nav-text: #F8FAFC;
+  --color-footer-bg: #0D1424;
+  --color-footer-text: #F8FAFC;
+  
+  --tag-fulltime-bg: rgba(45, 212, 191, 0.14);
+  --tag-fulltime-text: #2DD4BF;
+  --tag-fulltime-border: rgba(45, 212, 191, 0.3);
+  
+  --tag-internship-bg: rgba(255, 122, 89, 0.14);
+  --tag-internship-text: #FF7A59;
+  --tag-internship-border: rgba(255, 122, 89, 0.3);
+  
+  --tag-contract-bg: rgba(250, 204, 21, 0.14);
+  --tag-contract-text: #FACC15;
+  --tag-contract-border: rgba(250, 204, 21, 0.3);
+  
+  --logout-banner-bg: rgba(45, 212, 191, 0.12);
+  --logout-banner-text: #2DD4BF;
+  --logout-banner-border: rgba(45, 212, 191, 0.25);
+
+  --card-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --card-shadow-hover: 0 8px 28px rgba(0, 0, 0, 0.6);
+  --input-bg: #0D1424;
+  --modal-overlay-bg: rgba(4, 7, 13, 0.82);
+}
+
+/* Global theme smooth transitions */
+body {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* ---------- Theme toggle button (navbar) ---------- */
+.theme-toggle-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #fff;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.theme-toggle-btn:hover {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+  transform: scale(1.05);
+}
+
+[data-theme="dark"] .theme-toggle-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #FACC15;
+}
+
+[data-theme="dark"] .theme-toggle-btn:hover {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #fff;
+}
+
+/* ---------- Toast notifications (shared) ---------- */
+.toast-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 999;
+}
+
+.toast {
+  background-color: var(--color-bg-alt);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  padding: 12px 18px;
+  border-radius: 6px;
+  font-size: 13px;
+  box-shadow: var(--card-shadow-hover);
+  min-width: 220px;
+  max-width: 320px;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: toast-in 0.18s ease forwards;
+}
+
+.toast.toast-error {
+  background-color: var(--color-danger);
+  color: #fff;
+  border: none;
+}
+
+@keyframes toast-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.toast.toast-out {
+  animation: toast-out 0.18s ease forwards;
+}
+
+@keyframes toast-out {
+  to {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+/* ---------- Shared modal shell (details / easy apply) ---------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: var(--modal-overlay-bg);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 64px 16px;
+  z-index: 500;
+  overflow-y: auto;
+}
+
+.modal-overlay[hidden] {
+  display: none;
+}
+
+.modal-card {
+  position: relative;
+  background-color: var(--color-bg-alt);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--card-shadow-hover);
+  border-radius: 8px;
+  padding: 32px;
+  width: 100%;
+  max-width: 480px;
+  animation: modal-in 0.15s ease;
+  color: var(--color-text);
+}
+
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.modal-close:hover {
+  color: var(--color-text);
+}

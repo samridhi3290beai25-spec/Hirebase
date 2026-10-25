@@ -1,0 +1,24 @@
+/* Mobile-First Layout (Base styles target mobile/small screens first without media queries) */
+.container {
+    display: flex;
+    flex-direction: column; /* Set default flex direction to column on mobile */
+    width: 100%;
+    max-width: 90vw; /* Use relative units instead of fixed pixel widths */
+    margin: 0 auto;
+}
+
+.box {
+    padding: 20px;
+    background-color: skyblue;
+    border: 1px solid blue;
+    min-height: 48px; /* Ensure minimum tappable / target area of 48px */
+    min-width: 48px;
+}
+
+/* Use min-width media queries to switch flex-direction to row for wider screens */
+@media (min-width: 600px) {
+    .container {
+        flex-direction: row;
+    }
+}
+

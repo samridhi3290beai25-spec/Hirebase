@@ -1,0 +1,734 @@
+/* ============================================================
+   Hirebase Interactive Job Board Stylesheet (jobs.css)
+   Filter Sidebar, Extra Fields, Job Cards, & Easy Apply Modal
+   ============================================================ */
+
+/* ---------- Board Section Shell ---------- */
+.jobs-board {
+  padding: 0 24px 64px;
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.jobs-board-head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.jobs-board-head h2 {
+  font-family: var(--font-heading);
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--color-text);
+  letter-spacing: -0.5px;
+}
+
+/* ---------- View Tabs (All / Saved / Applied) ---------- */
+.jobs-tabs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  padding: 5px;
+  box-shadow: var(--shadow-sm);
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  padding: 8px 18px;
+  min-height: 40px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all var(--transition-fast);
+}
+
+.tab-btn:hover {
+  color: var(--color-text);
+  background-color: var(--color-accent-soft);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--color-accent) 0%, #4F46E5 100%);
+  color: #FFFFFF !important;
+  box-shadow: 0 2px 10px rgba(99, 102, 241, 0.35);
+}
+
+.tab-count {
+  font-size: 11px;
+  font-weight: 700;
+  background-color: var(--color-bg);
+  color: var(--color-text-muted);
+  border-radius: var(--radius-full);
+  padding: 2px 8px;
+  line-height: 1;
+}
+
+.tab-btn.active .tab-count {
+  background-color: rgba(255, 255, 255, 0.25) !important;
+  color: #FFFFFF !important;
+}
+
+/* Dark Mode Tab Overrides */
+[data-theme="dark"] .jobs-tabs {
+  background-color: var(--color-card);
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] .tab-btn {
+  color: var(--color-text-muted);
+}
+
+[data-theme="dark"] .tab-btn:hover {
+  color: var(--color-text);
+  background-color: rgba(129, 140, 248, 0.15);
+}
+
+[data-theme="dark"] .tab-btn.active {
+  background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);
+  color: #FFFFFF !important;
+  box-shadow: 0 2px 12px rgba(99, 102, 241, 0.4);
+}
+
+[data-theme="dark"] .tab-btn.active .tab-count {
+  background-color: rgba(255, 255, 255, 0.25) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .tab-count {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--color-text-muted);
+}
+
+/* ---------- Main Board Layout ---------- */
+.jobs-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+.jobs-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.filters-card {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-card);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.filters-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.filters-head h3 {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.reset-btn {
+  background: transparent;
+  border: none;
+  color: var(--color-accent);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.reset-btn:hover {
+  background: var(--color-accent-soft);
+}
+
+.filter-group {
+  margin-bottom: 22px;
+}
+
+.filter-group:last-child {
+  margin-bottom: 0;
+}
+
+.filter-label {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--color-text-muted);
+  margin-bottom: 12px;
+}
+
+/* Checkbox Row Inputs */
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 6px 0;
+  cursor: pointer;
+  user-select: none;
+  transition: color var(--transition-fast);
+}
+
+.checkbox-row:hover {
+  color: var(--color-accent);
+}
+
+.checkbox-row input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--color-border-hover);
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+  background-color: var(--color-bg);
+}
+
+.checkbox-row input[type="checkbox"]:checked {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.checkbox-row input[type="checkbox"]:checked::after {
+  content: '✓';
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.count-pill {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  padding: 2px 8px;
+}
+
+/* ---------- Custom Range Slider ---------- */
+.range-slider {
+  width: 100%;
+  accent-color: var(--color-accent);
+  margin: 8px 0 10px;
+  height: 6px;
+  background: var(--color-border);
+  border-radius: 3px;
+  outline: none;
+}
+
+.range-values {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+.range-values #salary-range-val {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+/* ---------- Skill Filter Pills ---------- */
+.skill-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skill-pill {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-bg);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  user-select: none;
+}
+
+.skill-pill:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background-color: var(--color-accent-soft);
+}
+
+.skill-pill.active {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+/* ---------- Salary Estimator Widget ---------- */
+.salary-estimator {
+  background: linear-gradient(180deg, var(--color-card) 0%, var(--color-bg) 100%);
+}
+
+.salary-estimator .field {
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.salary-estimator label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.salary-estimator select {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-size: 13px;
+  background-color: var(--color-bg-alt);
+  color: var(--color-text);
+  outline: none;
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
+}
+
+.salary-estimator select:focus {
+  border-color: var(--color-accent);
+}
+
+.estimate-box {
+  background-color: var(--color-accent-soft);
+  border: 1px dashed var(--color-accent);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  text-align: center;
+  margin-top: 16px;
+}
+
+.estimate-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-text-muted);
+  margin-bottom: 4px;
+}
+
+.estimate-amount {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--color-accent);
+}
+
+/* ---------- Toolbar & Result Count ---------- */
+.jobs-toolbar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.jobs-result-count {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--color-text);
+}
+
+.sort-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.sort-label select {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  font-size: 13px;
+  background-color: var(--color-bg-alt);
+  color: var(--color-text);
+  outline: none;
+  cursor: pointer;
+}
+
+/* ---------- Job Cards Grid ---------- */
+.job-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+
+.job-card {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+  position: relative;
+}
+
+.job-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-border-hover);
+  box-shadow: var(--shadow-md);
+}
+
+.job-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.job-card-top h3 {
+  font-family: var(--font-heading);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.3;
+}
+
+.job-meta {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+/* Save / Bookmark Button */
+.save-btn {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  font-size: 16px;
+  line-height: 1;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.save-btn:hover {
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.save-btn.saved {
+  color: var(--color-warning);
+  background: var(--color-warning-bg);
+  border-color: var(--color-warning);
+}
+
+/* Job Badges & Tags */
+.job-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tag-fulltime {
+  background-color: var(--color-success-bg);
+  color: var(--color-success);
+}
+
+.tag-internship {
+  background-color: var(--color-warning-bg);
+  color: var(--color-warning);
+}
+
+.tag-contract {
+  background-color: var(--color-accent-soft);
+  color: var(--color-accent);
+}
+
+.tag-salary {
+  background-color: var(--color-teal-soft);
+  color: var(--color-teal);
+  font-weight: 700;
+}
+
+.job-skills {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
+.job-card-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 8px;
+  border-top: 1px solid var(--color-border);
+}
+
+.btn-details,
+.btn-apply {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 14px;
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-details {
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.btn-details:hover {
+  background-color: var(--color-border);
+}
+
+.btn-apply {
+  background: linear-gradient(135deg, var(--color-accent) 0%, #4F46E5 100%);
+  border: none;
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+.btn-apply:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+}
+
+.btn-apply.applied {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+  border: 1px solid var(--color-success);
+  box-shadow: none;
+  cursor: default;
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 15px;
+  padding: 60px 20px;
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-bg);
+}
+
+/* ---------- Easy Apply & Details Modal Elements ---------- */
+.details-title {
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--color-text);
+  margin-bottom: 4px;
+}
+
+.details-company {
+  color: var(--color-text-muted);
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.details-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.details-section {
+  margin-bottom: 20px;
+}
+
+.details-section h4 {
+  font-family: var(--font-heading);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--color-accent);
+  margin-bottom: 8px;
+}
+
+.details-section p,
+.details-section li {
+  font-size: 14px;
+  color: var(--color-text);
+  line-height: 1.6;
+}
+
+.details-section ul {
+  padding-left: 20px;
+}
+
+.details-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border);
+}
+
+/* Easy Apply Form Layout Grid */
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+#apply-form .field {
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#apply-form label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+#apply-form input,
+#apply-form select,
+#apply-form textarea {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: 14px;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+#apply-form input:focus,
+#apply-form select:focus,
+#apply-form textarea:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-soft);
+}
+
+.form-message {
+  min-height: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-danger);
+  margin-bottom: 12px;
+}
+
+.form-message.success {
+  color: var(--color-success);
+}
+
+#apply-form button[type="submit"] {
+  width: 100%;
+  background: linear-gradient(135deg, var(--color-accent) 0%, #4F46E5 100%);
+  color: #FFFFFF;
+  border: none;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+#apply-form button[type="submit"]:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+}
+
+/* ---------- Media Queries for Jobs Board ---------- */
+@media (min-width: 540px) {
+  .jobs-board-head {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .jobs-toolbar {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+@media (min-width: 900px) {
+  .jobs-layout {
+    grid-template-columns: 280px 1fr;
+  }
+
+  .jobs-filters {
+    position: sticky;
+    top: calc(var(--navbar-height) + 20px);
+  }
+
+  .job-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
